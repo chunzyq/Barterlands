@@ -15,9 +15,6 @@ public class CameraMovement : MonoBehaviour
 
     private float smoothingSpeed = 0.4f;
 
-    // тестовый комментарий
-
-    // РАБОТАЙ БЛЯТЬ
     Vector3 velocity = Vector3.zero;
     private float targetDistance;
     private float currentZoom = 10f;
