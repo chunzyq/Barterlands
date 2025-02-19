@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Transactions;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -5,6 +7,7 @@ public class BuildingPlacementManager : MonoBehaviour
 {
     public GameObject previewObjectPrefab;
     public LayerMask groundLayer;
+    public LayerMask buildingLayer;
 
     private GameObject previewObject;
     public bool isBuildingMode;
@@ -34,6 +37,10 @@ public class BuildingPlacementManager : MonoBehaviour
             {
                 PlaceBuilding();
             }
+        }
+        if (Input.GetKeyDown(KeyCode.X) && !isBuildingMode)
+        {
+            DeleteBuilding();
         }
     }
     void ToggleBuildingMode()
@@ -82,5 +89,16 @@ public class BuildingPlacementManager : MonoBehaviour
         Destroy(previewObject);
 
         isBuildingMode = false;
+    }
+
+    void DeleteBuilding()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, buildingLayer))
+        {
+            Destroy(hit.collider.gameObject);
+        }
     }
 }
