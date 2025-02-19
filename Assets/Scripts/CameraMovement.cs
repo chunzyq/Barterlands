@@ -14,6 +14,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float maxZoom = 20f;
 
     private float smoothingSpeed = 0.4f;
+
+    // тестовый комментарий
     Vector3 velocity = Vector3.zero;
     private float targetDistance;
     private float currentZoom = 10f;
