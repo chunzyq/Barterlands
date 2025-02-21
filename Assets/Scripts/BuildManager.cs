@@ -39,9 +39,9 @@ public class BuildingPlacementManager : MonoBehaviour
             }
         }
         if (Input.GetKeyDown(KeyCode.X) && !isBuildingMode)
-        {
-            DeleteBuilding();
-        }
+            {
+                DeleteBuilding();
+            }
     }
     void ToggleBuildingMode()
     {
