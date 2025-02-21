@@ -18,7 +18,6 @@ public class BuildingPlacementManager : MonoBehaviour
     {
         instance = this;
     }
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))

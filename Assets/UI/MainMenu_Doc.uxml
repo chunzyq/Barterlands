@@ -1,6 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/MainMenu.uss?fileID=7433441132597879392&amp;guid=589a052bc6d5e034ba06a8daeaddcdc1&amp;type=3#MainMenu" />
-    <ui:Button name="startButton" text="Начать игру" class="button" />
-    <ui:Button name="settingsButton" text="Настройки" class="button" />
-    <ui:Button name="exitButton" text="Выход из игры" class="button" />
-</ui:UXML>
