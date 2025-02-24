@@ -1,0 +1,16 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuUI.uss?fileID=7433441132597879392&amp;guid=4b3c0ea8d370cef4bbc2f22cc2281292&amp;type=3#MainMenuUI" />
+    <engine:VisualElement name="MainMenu" class="container">
+        <engine:Button text="Начать игру" name="StartButton" class="button" />
+        <engine:Button text="Настройки" name="SettingsButton" class="button" />
+        <engine:Button text="Выход" name="ExitButton" class="button" />
+    </engine:VisualElement>
+    <engine:VisualElement name="SettingsMenu" class="container" style="flex-grow: 1; position: absolute; height: 587px; width: 730px; left: -4px; margin-top: 140px; margin-bottom: 140px; margin-right: 600px; margin-left: 600px; display: flex; visibility: visible; background-color: rgba(255, 255, 255, 0); background-image: url(&quot;project://database/Assets/Materials/grayBG.png?fileID=2800000&amp;guid=0c72bd3a95ac4d444bad9cb563da1119&amp;type=3#grayBG&quot;); -unity-background-image-tint-color: rgb(65, 65, 65); justify-content: center; align-self: center; align-content: auto; flex-direction: column; top: 0;">
+        <engine:Button text="Do smth&#10;" name="MakeSmth" class="button" />
+        <engine:Button text="Back&#10;" name="GoBack" class="button" />
+    </engine:VisualElement>
+    <engine:VisualElement name="EscapeMenu" class="container" style="flex-grow: 1; position: absolute; height: 586px; width: 723px; margin-top: 140px; margin-bottom: 140px;">
+        <engine:Button text="Продолжить" name="continueButton" class="button" />
+        <engine:Button text="Выйти в главное меню" name="backToMainMenu" class="button" style="white-space: normal;" />
+    </engine:VisualElement>
+</engine:UXML>
