@@ -1,48 +1,60 @@
 using UnityEngine.UIElements;
 using UnityEngine;
-using System.ComponentModel.Design.Serialization;
 
 public class ButtonContoller : MonoBehaviour
 {
+    // UI Elements
+    private VisualElement _mainMenu;
+    private VisualElement _settingsMenu;
+    private VisualElement _escapeMenu;
 
-    private VisualElement settingsMenu;
-    private VisualElement mainMenu;
-    private VisualElement escapeMenu;
-    private bool isGamePlaying = false;
+    // Buttons
+    private Button _startButton;
+    private Button _settingsButton;
+    private Button _exitButton;
+    private Button _doSomethingButton; // add logic in future
+    private Button _goBackButton;
+    private Button _continueButton;
+    private Button _backToMainMenuButton;
+
+    // Game state
+    private bool _isGamePlaying;
+
     private void OnEnable()
     {
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 
-        Button startButton = root.Q<Button>("StartButton");
-        Button settingsButton = root.Q<Button>("SettingsButton");
-        Button exitButton = root.Q<Button>("ExitButton");
-        Button doSmth = root.Q<Button>("MakeSmth");
-        Button goBack = root.Q<Button>("GoBack");
-        Button continueButton = root.Q<Button>("continueButton");
-        Button backToMainMenu = root.Q<Button>("backToMainMenu");
+        _startButton = root.Q<Button>("StartButton");
+        _settingsButton = root.Q<Button>("SettingsButton");
+        _exitButton = root.Q<Button>("ExitButton");
+        _doSomethingButton = root.Q<Button>("MakeSmth");
+        _goBackButton = root.Q<Button>("GoBack");
+        _continueButton = root.Q<Button>("continueButton");
+        _backToMainMenuButton = root.Q<Button>("backToMainMenu");
 
-        mainMenu = root.Q<VisualElement>("MainMenu");
-        settingsMenu = root.Q<VisualElement>("SettingsMenu");
-        escapeMenu = root.Q<VisualElement>("EscapeMenu");
+        _mainMenu = root.Q<VisualElement>("MainMenu");
+        _settingsMenu = root.Q<VisualElement>("SettingsMenu");
+        _escapeMenu = root.Q<VisualElement>("EscapeMenu");
 
-
-        startButton.RegisterCallback<ClickEvent>(OnStartButtonClicked);
-        settingsButton.RegisterCallback<ClickEvent>(OnSettingsButtonClicked);
-        exitButton.RegisterCallback<ClickEvent>(OnExitButtonClicked);
-        doSmth.RegisterCallback<ClickEvent>(OnDoSmthButtonClicked);
-        goBack.RegisterCallback<ClickEvent>(OnGoBackButtonClicked);
-        continueButton.RegisterCallback<ClickEvent>(OnContinueButtonClicked);
-        backToMainMenu.RegisterCallback<ClickEvent>(OnBackToMainMenuClicked);
-
-        settingsMenu.style.display = DisplayStyle.None;
-        escapeMenu.style.display = DisplayStyle.None;
+        _settingsMenu.style.display = DisplayStyle.None;
+        _escapeMenu.style.display = DisplayStyle.None;
         Time.timeScale = 0f;
-        isGamePlaying = false;
+        _isGamePlaying = false;
+
+
+        _startButton.RegisterCallback<ClickEvent>(OnStartButtonClicked);
+        _settingsButton.RegisterCallback<ClickEvent>(OnSettingsButtonClicked);
+        _exitButton.RegisterCallback<ClickEvent>(OnExitButtonClicked);
+        _doSomethingButton.RegisterCallback<ClickEvent>(OnDoSmthButtonClicked);
+        _goBackButton.RegisterCallback<ClickEvent>(OnGoBackButtonClicked);
+        _continueButton.RegisterCallback<ClickEvent>(OnContinueButtonClicked);
+        _backToMainMenuButton.RegisterCallback<ClickEvent>(OnBackToMainMenuClicked);
     }
-    void Update()
+
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && isGamePlaying) // доделать чтобы escape не открывался в settings + mainMenu
+        if (Input.GetKeyDown(KeyCode.Escape) && _isGamePlaying)
         {
             OpenMainMenu();
         }
@@ -50,57 +62,61 @@ public class ButtonContoller : MonoBehaviour
 
     private void OnStartButtonClicked(ClickEvent clickEvent)
     {
-        Debug.Log("Play the game!");
-        mainMenu.style.display = DisplayStyle.None;
+        _mainMenu.style.display = DisplayStyle.None;
         Time.timeScale = 1.5f;
-        isGamePlaying = true;
+        _isGamePlaying = true;
         
     }
+
     private void OnSettingsButtonClicked(ClickEvent clickEvent)
     {
-        settingsMenu.style.display = DisplayStyle.Flex;
-        Debug.Log("Open the settings!");
+        _settingsMenu.style.display = DisplayStyle.Flex;
     }
+
     private void OnExitButtonClicked(ClickEvent clickEvent)
     {
-        Debug.Log("Exit the game!");
         Application.Quit();
         UnityEditor.EditorApplication.isPlaying = false;
     }
+
     private void OnGoBackButtonClicked(ClickEvent clickEvent)
     {
-        settingsMenu.style.display = DisplayStyle.None;
+        _settingsMenu.style.display = DisplayStyle.None;
     }
+
     private void OnDoSmthButtonClicked(ClickEvent clickEvent)
     {
         Debug.Log("Congratulations! You're doing something!");
     }
+
     private void OnContinueButtonClicked(ClickEvent clickEvent)
     {
-        escapeMenu.style.display = DisplayStyle.None;
+        _escapeMenu.style.display = DisplayStyle.None;
         Time.timeScale = 1.5f;
-        isGamePlaying = true;
+        _isGamePlaying = true;
     }
+
     private void OnBackToMainMenuClicked(ClickEvent clickEvent)
     {
-        escapeMenu.style.display = DisplayStyle.None;
-        mainMenu.style.display = DisplayStyle.Flex;
+        _escapeMenu.style.display = DisplayStyle.None;
+        _mainMenu.style.display = DisplayStyle.Flex;
         Time.timeScale = 0f;
-        isGamePlaying = false;
+        _isGamePlaying = false;
     }
+
     private void OpenMainMenu()
     {
-        if (isGamePlaying)
+        if (_isGamePlaying)
         {
             Time.timeScale = 0f;
-            escapeMenu.style.display = DisplayStyle.Flex;
-            isGamePlaying = false;
+            _escapeMenu.style.display = DisplayStyle.Flex;
+            _isGamePlaying = false;
         }
         else
         {
             Time.timeScale = 1.5f;
-            escapeMenu.style.display = DisplayStyle.None;
-            isGamePlaying = true;
+            _escapeMenu.style.display = DisplayStyle.None;
+            _isGamePlaying = true;
         }
     }
 }
