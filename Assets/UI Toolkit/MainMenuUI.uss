@@ -27,12 +27,11 @@
 
 .container {
     flex-grow: 1;
-    justify-content: center;
-    align-items: stretch;
-    background-image: url("project://database/Assets/Materials/grayBG.png?fileID=2800000&guid=0c72bd3a95ac4d444bad9cb563da1119&type=3#grayBG");
-    -unity-background-image-tint-color: rgb(65, 65, 65);
     margin-top: 250px;
     margin-right: 600px;
     margin-bottom: 250px;
     margin-left: 600px;
+    justify-content: center;
+    background-image: url("project://database/Assets/Materials/grayBG.png?fileID=2800000&guid=0c72bd3a95ac4d444bad9cb563da1119&type=3#grayBG");
+    -unity-background-image-tint-color: rgb(65, 65, 65);
 }

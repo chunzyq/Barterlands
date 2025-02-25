@@ -70,6 +70,8 @@ public class ButtonContoller : MonoBehaviour
 
     private void OnSettingsButtonClicked(ClickEvent clickEvent)
     {
+        _mainMenu.style.display = DisplayStyle.None;
+        _escapeMenu.style.display = DisplayStyle.None;
         _settingsMenu.style.display = DisplayStyle.Flex;
     }
 
@@ -82,6 +84,7 @@ public class ButtonContoller : MonoBehaviour
     private void OnGoBackButtonClicked(ClickEvent clickEvent)
     {
         _settingsMenu.style.display = DisplayStyle.None;
+        _mainMenu.style.display = DisplayStyle.Flex;
     }
 
     private void OnDoSmthButtonClicked(ClickEvent clickEvent)
