@@ -20,7 +20,7 @@ public class BuildingPlacementManager : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B) && MenuController.Instance.isPaused == false)
         {
             isBuildingMode = !isBuildingMode;
             ToggleBuildingMode();
@@ -32,12 +32,12 @@ public class BuildingPlacementManager : MonoBehaviour
         {
             UpdatePreviewObject();
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && MenuController.Instance.isPaused == false)
             {
                 PlaceBuilding();
             }
         }
-        if (Input.GetKeyDown(KeyCode.X) && !isBuildingMode)
+        if (Input.GetKeyDown(KeyCode.X) && !isBuildingMode && MenuController.Instance.isPaused == false)
             {
                 DeleteBuilding();
             }
@@ -59,7 +59,7 @@ public class BuildingPlacementManager : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer) && MenuController.Instance.isPaused == false)
         {
             Vector3 snappedPosition = new Vector3(Mathf.Round(hit.point.x), hit.point.y, Mathf.Round(hit.point.z)); // почитать
             previewObject.transform.position = snappedPosition;
