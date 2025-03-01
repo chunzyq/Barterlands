@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class GridBuildingSystem : MonoBehaviour
+public class BuildManager : MonoBehaviour
 {
     [Header("Настройки")]
     [SerializeField] private GameObject buildingPrefab;
@@ -16,7 +19,7 @@ public class GridBuildingSystem : MonoBehaviour
     private GameObject currentBuildingPreview;
     private bool canPlace = true;
     private Material originalMaterial;
-    
+
     void Update()
     {
         if (Input.GetKeyDown(buildModeKey) && MenuController.Instance.isPaused == false)
