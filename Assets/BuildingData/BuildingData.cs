@@ -5,4 +5,5 @@ public class BuildingData : ScriptableObject
 {
     public string buildingName;
     public Sprite test;
+    public GameObject buildingPrefab_test;
 }

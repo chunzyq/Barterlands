@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: industrialBuilding
   m_EditorClassIdentifier: 
   buildingName: Industial
-  Icon: {fileID: 21300000, guid: 1f53bcea7a2fa0546b8a72b06c3e1226, type: 3}
+  test: {fileID: 21300000, guid: 1f53bcea7a2fa0546b8a72b06c3e1226, type: 3}
+  buildingPrefab_test: {fileID: 1645931307499006240, guid: 234eeaaad12ebfe4eb26eac6651112c7, type: 3}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BuildingList : MonoBehaviour
 {
     [SerializeField] List<BuildingData> allBuildings = new List<BuildingData>();
-    public List<BuildingData> containerBuildings {get; private set; }
+    public List<BuildingData> containerBuildings {get; private set;}
 
     void Awake()
     {

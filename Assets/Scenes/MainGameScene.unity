@@ -771,14 +771,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ce9fb3fc07ee9e48a16fad85ed6aec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingPrefab: {fileID: 1645931307499006240, guid: 234eeaaad12ebfe4eb26eac6651112c7, type: 3}
   gridSize: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
   validPlacementMaterial: {fileID: 2100000, guid: f25e6cdb9725bea4f980c482be6b01cd, type: 2}
   invalidPlacementMaterial: {fileID: 2100000, guid: efa97a88d21b25d43b45296917c451c2, type: 2}
-  buildModeKey: 98
 --- !u!114 &900381521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1101,7 +1099,7 @@ GameObject:
   - component: {fileID: 1322089666}
   - component: {fileID: 1322089665}
   m_Layer: 5
-  m_Name: BG
+  m_Name: Buildings_Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1141,6 +1139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingList: {fileID: 657280800}
   container: {fileID: 1546673969}
+  buildingButtonPrefab: {fileID: 4822321746410324842, guid: 14c164fbb062266438e567097b5770e4, type: 3}
+  buildManager: {fileID: 900381520}
 --- !u!222 &1322089666
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1292,8 +1292,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: -132.74573}
-  m_SizeDelta: {x: 0, y: -265.4924}
+  m_AnchoredPosition: {x: 0, y: -293.648}
+  m_SizeDelta: {x: 0, y: -587.298}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1546673970
 MonoBehaviour:
@@ -1370,7 +1370,7 @@ GameObject:
   - component: {fileID: 1563261247}
   - component: {fileID: 1563261246}
   m_Layer: 5
-  m_Name: test
+  m_Name: BuildingMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1405,10 +1405,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1434,7 +1434,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
