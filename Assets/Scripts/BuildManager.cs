@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BuildManager : MonoBehaviour
@@ -22,9 +23,11 @@ public class BuildManager : MonoBehaviour
         
         if (inBuildMode && MenuController.Instance.isPaused == false)
         {
+            bool isOverUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+
             UpdateBuildingPreview();
             
-            if (Input.GetMouseButtonDown(0) && canPlace && MenuController.Instance.isPaused == false)
+            if (Input.GetMouseButtonDown(0) && canPlace && MenuController.Instance.isPaused == false && !isOverUI)
             {
                 PlaceBuilding();
             }
@@ -58,7 +61,7 @@ public class BuildManager : MonoBehaviour
             inBuildMode = false;
             return;
         }
-        
+
         currentBuildingPreview = Instantiate(buildingPrefab);
         
         Renderer renderer = currentBuildingPreview.GetComponent<Renderer>();
@@ -80,6 +83,20 @@ public class BuildManager : MonoBehaviour
     
     private void UpdateBuildingPreview()
     {
+        if (currentBuildingPreview == null) return;
+
+        bool isOverUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+
+        if (isOverUI)
+        {
+            currentBuildingPreview.SetActive(false);
+            return;
+        }
+        else
+        {
+            currentBuildingPreview.SetActive(true);
+        }
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         
@@ -124,6 +141,11 @@ public class BuildManager : MonoBehaviour
     
     private void PlaceBuilding()
     {
+
+        if (currentBuildingPreview == null)
+        {
+            return;
+        }
         GameObject newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
         
         Renderer renderer = newBuilding.GetComponent<Renderer>();
@@ -160,5 +182,9 @@ public class BuildManager : MonoBehaviour
         }
         
         return true;
+    }
+    public void OnEnterBuildModeButtonClicked()
+    {
+        inBuildMode = true;
     }
 }
