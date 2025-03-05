@@ -6,17 +6,33 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
+
+    public static BuildManager Instance;
+
     [Header("Настройки")]
     [SerializeField] private float gridSize = 1f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Material validPlacementMaterial;
     [SerializeField] private Material invalidPlacementMaterial;
+
     
-    private bool inBuildMode = false;
+    public bool inBuildMode = false;
     private bool canPlace = true;
     private GameObject buildingPrefab;
     private GameObject currentBuildingPreview;
     private Material originalMaterial;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Update()
     {
@@ -47,6 +63,7 @@ public class BuildManager : MonoBehaviour
             Destroy(currentBuildingPreview);
         }
 
+        
         buildingPrefab = buildingPrefabToPlace;
         inBuildMode = true;
 
@@ -147,14 +164,17 @@ public class BuildManager : MonoBehaviour
             return;
         }
         GameObject newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
+        newBuilding.layer = LayerMask.NameToLayer("Building");
         
         Renderer renderer = newBuilding.GetComponent<Renderer>();
         if (renderer != null && originalMaterial != null)
         {
             renderer.material = originalMaterial;
         }
-        DestroyBuildingPreview();
-        CreateBuildingPreview();
+
+        inBuildMode = false;
+
+        
     
     }
     
