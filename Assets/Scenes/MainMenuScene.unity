@@ -2675,7 +2675,7 @@ MonoBehaviour:
   pauseMenuCanvas: {fileID: 1574448115}
   isPaused: 0
   buildingButton:
-  - {fileID: 4822321746410324842, guid: 14c164fbb062266438e567097b5770e4, type: 3}
+  - {fileID: 4273963476171398729, guid: d8f1c4bc713779944b54b2a30d8bff77, type: 3}
 --- !u!4 &1513232873
 Transform:
   m_ObjectHideFlags: 0

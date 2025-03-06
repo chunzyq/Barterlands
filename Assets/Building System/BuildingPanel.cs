@@ -6,10 +6,6 @@ public class BuildingPanel : MonoBehaviour
     public static BuildingPanel Instance;
 
     [SerializeField] private LayerMask buildingsLayer;
-    // [SerializeField] private GameObject testPanelUI;
-    [SerializeField] private BuildingList buildingList;
-
-    public GameObject selectedBuilding;
 
     void Awake()
     {
@@ -25,7 +21,7 @@ public class BuildingPanel : MonoBehaviour
 
     void Update()
     {
-        if (BuildManager.Instance.inBuildMode|| MenuController.Instance.isPaused) return;
+        if (BuildManager.Instance.inBuildMode || MenuController.Instance.isPaused) return;
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
 
         if (Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButtonDown(0))
@@ -34,6 +30,7 @@ public class BuildingPanel : MonoBehaviour
         }
     }
 
+
     private void HandleOnBuildingClicked()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -41,40 +38,16 @@ public class BuildingPanel : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 100f, buildingsLayer))
         {
-            selectedBuilding = hit.collider.gameObject;
-            BuildingData buildingData = FindBuildingByName(selectedBuilding);
-            Debug.Log(buildingData);
-
-            if (buildingData != null && buildingData.buildingPanelUI != null)
-            {
-                buildingData.buildingPanelUI.SetActive(true);
-            }
+            Building selectedBuilding = hit.collider.GetComponent<Building>();
             
-        }
-    }
-
-    private BuildingData FindBuildingByName(GameObject buildingObject)
-    {
-        if (buildingObject == null) return null;
-
-        string objectName = buildingObject.name.Replace("(Clone)", "").Trim();
-
-        if (buildingList == null) return null;
-
-        foreach (var building in buildingList.containerBuildings)
-        {
-            if (building != null && building.buildingPrefab_test != null && building.buildingPrefab_test.name == objectName)
+            if (selectedBuilding != null && selectedBuilding.currentData != null)
             {
-                Debug.Log(building);
-                return building;
+                UIController.Instance.ShowPanelByTag(selectedBuilding.currentData.uiPanelTag);
             }
         }
-        
-        return null;
+        else
+        {
+            UIController.Instance.HideAllPanels();
+        }
     }
-
-    // private void CloseMenu()
-    // {
-    //     testPanelUI.SetActive(false);
-    // }
 }

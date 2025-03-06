@@ -15,6 +15,5 @@ MonoBehaviour:
   buildingName: test
   iconSprite: {fileID: 0}
   buildingPrefab_test: {fileID: 1645931307499006240, guid: 234eeaaad12ebfe4eb26eac6651112c7, type: 3}
-  buildingPanelUI:
-    objectName: Panel
+  uiPanelTag: residentialPanel
   id: 1

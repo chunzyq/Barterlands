@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BuildingList : MonoBehaviour
 {
-    private BuildingData buildingData;
     [SerializeField] List<BuildingData> allBuildings = new List<BuildingData>();
     public List<BuildingData> containerBuildings;
     public List<BuildingData> scientificBuilding;

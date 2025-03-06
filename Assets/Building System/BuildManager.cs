@@ -22,6 +22,10 @@ public class BuildManager : MonoBehaviour
     private GameObject currentBuildingPreview;
     private Material originalMaterial;
 
+    public Building[] buildings;
+    public GameObject buildingUIPrefab;
+    public Transform uiContainer;
+
     void Awake()
     {
         if (Instance == null)
@@ -33,6 +37,7 @@ public class BuildManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 
     void Update()
     {
