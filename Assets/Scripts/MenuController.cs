@@ -12,7 +12,6 @@ public class MenuController : MonoBehaviour
     [SerializeField] private GameObject mainMenu = null;
     public Canvas pauseMenuCanvas;
     public bool isPaused = false;
-    public Button[] buildingButton;
 
     private void Awake()
     {
@@ -61,10 +60,6 @@ public class MenuController : MonoBehaviour
         Time.timeScale = 0f;
         isPaused = true;
 
-        foreach (Button button in buildingButton)
-        {
-            button.interactable = false;
-        }
     }
     public void ResumeGame()
     {
@@ -72,10 +67,6 @@ public class MenuController : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
 
-        foreach (Button button in buildingButton)
-        {
-            button.interactable = true;
-        }
     }
     public void OnPauseQuitBtnClicked()
     {
