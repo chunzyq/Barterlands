@@ -37,12 +37,13 @@ public class BuildManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        enterBuildMode_Btn.onClick.AddListener(OnEnterBuildModeButtonClicked);
+        closeListOfBuildings_Btn.onClick.AddListener(OnCloseListOfBuildingsClicked);
     }
 
     void Update()
     {
-        enterBuildMode_Btn.onClick.AddListener(OnEnterBuildModeButtonClicked);
-        closeListOfBuildings_Btn.onClick.AddListener(OnCloseListOfBuildingsClicked);
 
         if (inBuildMode && MenuController.Instance.isPaused == false)
         {
@@ -181,6 +182,12 @@ public class BuildManager : MonoBehaviour
         if (renderer != null && originalMaterial != null)
         {
             renderer.material = originalMaterial;
+        }
+
+        BuildingInstance buildingInstance = newBuilding.GetComponent<BuildingInstance>();
+        if (buildingInstance != null)
+        {
+            buildingInstance.GenerateUniqueID();
         }
         
         inBuildMode = false;

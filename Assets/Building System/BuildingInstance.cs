@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BuildingInstance : MonoBehaviour
@@ -9,10 +10,10 @@ public class BuildingInstance : MonoBehaviour
     public LaboratorySettings laboratorySettings;
     public HouseSettings houseSettings;
 
+    private bool canOpenUI = false;
+
     private void Awake()
     {
-        GenerateUniqueID();
-
         switch (buildingData.buildingType)
         {
             case BuildingType.Factory:
@@ -26,7 +27,17 @@ public class BuildingInstance : MonoBehaviour
                 break;
         }
     }
-    private void GenerateUniqueID()
+   private void Start()
+    {
+        StartCoroutine(EnableUIInteraction());
+    }
+
+    private IEnumerator EnableUIInteraction()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canOpenUI = true;
+    }
+    public void GenerateUniqueID()
     {
         InstanceID = System.Guid.NewGuid().ToString(); // генерируется уникальный ID
         Debug.Log(InstanceID);
@@ -34,6 +45,11 @@ public class BuildingInstance : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (!canOpenUI)
+        {
+            return;
+        }
+
         UIController.Instance.OpenBuildingUI(this); // при нажатии на ЛКМ на здание - инфа о нём передаётся в UIController в функцию
         Debug.Log("Clicked");
     }

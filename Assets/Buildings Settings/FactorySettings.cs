@@ -5,4 +5,7 @@ using UnityEngine;
 public class FactorySettings
 {
     public int productionRate = 10;
+    public int maxFactoryWorkers = 4;
+    public int currentFactoryWorkers = 0;
+    public float currentFacEfficiency = 0f;
 }
