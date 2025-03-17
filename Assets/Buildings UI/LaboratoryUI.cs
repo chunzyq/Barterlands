@@ -4,44 +4,60 @@ using UnityEngine.UI;
 
 public class LaboratoryUI : MonoBehaviour
 {
-    public TextMeshProUGUI researchTime;
-    public TextMeshProUGUI currentWorkers;
+    public TextMeshProUGUI researchTimeText;
+    public TextMeshProUGUI currentWorkersText;
     public TextMeshProUGUI currentEfficiencyText;
-    public Button increaseResearchTime;
     public Button addWorkersButton;
+    public Button removeWorkersButton;
+
+    public float efficiencyPercent;
+    public int researchTimeDependsOnWorkers;
 
     private LaboratorySettings currentSettings;
 
     public void UpdateUI(LaboratorySettings settings)
     {
         currentSettings = settings;
-        currentEfficiencyText.text = "Current Efficinecy: " + settings.currentLabEfficiency.ToString("F0") + "%";
-        currentWorkers.text = "Current Workers: " + settings.currentLaboratoryWorkers.ToString();
-        researchTime.text = "Research Time: " + settings.researchTime.ToString();
+        UpdateAllUI();
     }
     void Awake()
     {
-        increaseResearchTime.onClick.AddListener(OnIncreaseButtonClicked);
         addWorkersButton.onClick.AddListener(OnAddWorkersButtonClicked);
-    }
-    private void OnIncreaseButtonClicked()
-    {
-        currentSettings.researchTime += 10;
-        researchTime.text = "Research Time: " + currentSettings.researchTime.ToString();
+        removeWorkersButton.onClick.AddListener(OnRemoveWorkersButtonClicked);
     }
     private void OnAddWorkersButtonClicked()
     {
         if (currentSettings.currentLaboratoryWorkers < currentSettings.maxLaboratoryWorkers)
         {
             currentSettings.currentLaboratoryWorkers += 1;
-            float efficiencyPercent = currentSettings.currentLabEfficiency = (currentSettings.currentLaboratoryWorkers / (float)currentSettings.maxLaboratoryWorkers) * 100; 
-            currentWorkers.text = "Current Workers: " + currentSettings.currentLaboratoryWorkers.ToString();
-            currentEfficiencyText.text = "Current Efficinecy: " + efficiencyPercent.ToString("F0") + "%";
+
+            UpdateAllUI();
         }
         else
         {
             Debug.Log("Максимальное количество рабочих достигнуто.");
-            addWorkersButton.interactable = false;
         }
+    }
+    public void OnRemoveWorkersButtonClicked()
+    {
+        if (currentSettings.currentLaboratoryWorkers > 0)
+        {
+            currentSettings.currentLaboratoryWorkers -= 1;
+
+            UpdateAllUI();
+        }
+        else
+        {
+            Debug.Log("Минимальное количество рабочих достигнуто.");
+        }
+    }
+    public void UpdateAllUI()
+    {
+        efficiencyPercent = currentSettings.currentLabEfficiency = (currentSettings.currentLaboratoryWorkers / (float)currentSettings.maxLaboratoryWorkers) * 100;
+        researchTimeDependsOnWorkers = currentSettings.baseResearchTime - (currentSettings.currentLaboratoryWorkers * currentSettings.baseReduceResearchTimePerWorker);
+
+        currentWorkersText.text = "Current Workers: " + currentSettings.currentLaboratoryWorkers.ToString() + "/" + currentSettings.maxLaboratoryWorkers;
+        researchTimeText.text = "Research Time: " + researchTimeDependsOnWorkers.ToString() + " min";
+        currentEfficiencyText.text = "Current Efficinecy: " + efficiencyPercent.ToString("F0") + "%";
     }
 }
