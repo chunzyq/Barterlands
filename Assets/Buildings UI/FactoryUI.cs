@@ -14,15 +14,12 @@ public class FactoryUI : MonoBehaviour
     public float efficiencyPercent;
     public int productionRate;
 
-    private FactorySettings currentSettings;
+    private FactorySettings currentFactorySettings;
 
     public void UpdateUI(FactorySettings settings)
     {
-        currentSettings = settings;
+        currentFactorySettings = settings;
         UpdateAllUI();
-        // currentEfficiencyText.text = "Current Efficiency: " + settings.currentFacEfficiency.ToString("F0") + "%";
-        // currentWorkersText.text = "Current Workers: " + settings.currentFactoryWorkers.ToString() + "/" + settings.maxFactoryWorkers;
-        // productionRateText.text = "Production Rate: " + settings.productionRate.ToString() + "/h";
 
     }
 
@@ -33,18 +30,12 @@ public class FactoryUI : MonoBehaviour
     }
     public void OnAddWorkersButtonClicked()
     {
-        if (currentSettings.currentFactoryWorkers < currentSettings.maxFactoryWorkers)
+        if (currentFactorySettings.currentFactoryWorkers < currentFactorySettings.maxFactoryWorkers)
         {
-            currentSettings.currentFactoryWorkers += 1;
+            currentFactorySettings.currentFactoryWorkers += 1;
 
             UpdateAllUI();
-
-            // efficiencyPercent = currentSettings.currentFacEfficiency = (currentSettings.currentFactoryWorkers / (float)currentSettings.maxFactoryWorkers) * 100;
-            // productionRate = currentSettings.currentFactoryWorkers * currentSettings.baseProductionRatePerWorker;
-
-            // currentWorkersText.text = "Current Workers: " + currentSettings.currentFactoryWorkers.ToString() + "/" + currentSettings.maxFactoryWorkers;
-            // currentEfficiencyText.text = "Current Efficiency: " + efficiencyPercent.ToString("F0") + "%";
-            // productionRateText.text = "Production Rate: " + productionRate.ToString() + "/h";
+            // UIController.Instance.mainInterfaceUI.UpdateIntefaceFactoryUI();
         }
         else
         {
@@ -53,19 +44,12 @@ public class FactoryUI : MonoBehaviour
     }
     public void OnRemoveWorkersButtonClicked()
     {
-        if (currentSettings.currentFactoryWorkers > 0)
+        if (currentFactorySettings.currentFactoryWorkers > 0)
         {
-            currentSettings.currentFactoryWorkers -= 1;
+            currentFactorySettings.currentFactoryWorkers -= 1;
 
             UpdateAllUI();
-        
-
-            // efficiencyPercent = currentSettings.currentFacEfficiency = (currentSettings.currentFactoryWorkers / (float)currentSettings.maxFactoryWorkers) * 100;
-            // productionRate = currentSettings.currentFactoryWorkers * currentSettings.baseProductionRatePerWorker;
-
-            // currentWorkersText.text = "Current Workers: " + currentSettings.currentFactoryWorkers.ToString() + "/" + currentSettings.maxFactoryWorkers;
-            // currentEfficiencyText.text = "Current Efficiency: " + efficiencyPercent.ToString("F0") + "%";
-            // productionRateText.text = "Production Rate: " + productionRate.ToString() + "/h";
+            // UIController.Instance.mainInterfaceUI.UpdateIntefaceFactoryUI();
         }
         else
         {
@@ -74,10 +58,10 @@ public class FactoryUI : MonoBehaviour
     }
     public void UpdateAllUI()
     {
-        efficiencyPercent = currentSettings.currentFacEfficiency = (currentSettings.currentFactoryWorkers / (float)currentSettings.maxFactoryWorkers) * 100;
-        productionRate = currentSettings.currentFactoryWorkers * currentSettings.baseProductionRatePerWorker;
+        efficiencyPercent = currentFactorySettings.currentFacEfficiency = (currentFactorySettings.currentFactoryWorkers / (float)currentFactorySettings.maxFactoryWorkers) * 100;
+        productionRate = currentFactorySettings.currentFactoryWorkers * currentFactorySettings.baseProductionRatePerWorker;
 
-        currentWorkersText.text = "Current Workers: " + currentSettings.currentFactoryWorkers.ToString() + "/" + currentSettings.maxFactoryWorkers;
+        currentWorkersText.text = "Current Workers: " + currentFactorySettings.currentFactoryWorkers.ToString() + "/" + currentFactorySettings.maxFactoryWorkers;
         currentEfficiencyText.text = "Current Efficiency: " + efficiencyPercent.ToString("F0") + "%";
         productionRateText.text = "Production Rate: " + productionRate.ToString() + "/h";
     }

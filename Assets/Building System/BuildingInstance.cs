@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingInstance : MonoBehaviour
 {
+    public static List<BuildingInstance> allBuildingsInstance = new List<BuildingInstance>();
     public string InstanceID {get; private set;} // создаётся поле для уникального ID здания, у которого есть публичный доступ для ДОСТУПА, но приватный доступ для изменения
 
     public BuildingData buildingData; // доступ к дате зданий
@@ -11,9 +13,15 @@ public class BuildingInstance : MonoBehaviour
     public HouseSettings houseSettings;
 
     private bool canOpenUI = false;
+    public bool isPreview = false;
 
     private void Awake()
     {
+        if (!isPreview)
+        {
+            allBuildingsInstance.Add(this);
+        }
+
         switch (buildingData.buildingType)
         {
             case BuildingType.Factory:
@@ -27,7 +35,12 @@ public class BuildingInstance : MonoBehaviour
                 break;
         }
     }
-   private void Start()
+
+    private void OnDestroy()
+    {
+        allBuildingsInstance.Remove(this);
+    }
+    private void Start()
     {
         StartCoroutine(EnableUIInteraction());
     }

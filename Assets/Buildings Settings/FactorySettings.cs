@@ -8,9 +8,5 @@ public class FactorySettings
     public int currentFactoryWorkers = 0;
     public float currentFacEfficiency = 0f;
     public int baseProductionRatePerWorker = 2;
-
-    public int productionRate
-    {
-        get {return currentFactoryWorkers * baseProductionRatePerWorker;}
-    }
+    public int productionRate = 0;
 }

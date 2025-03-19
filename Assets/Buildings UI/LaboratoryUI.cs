@@ -13,11 +13,11 @@ public class LaboratoryUI : MonoBehaviour
     public float efficiencyPercent;
     public int researchTimeDependsOnWorkers;
 
-    private LaboratorySettings currentSettings;
+    private LaboratorySettings currentLaboratorySettings;
 
     public void UpdateUI(LaboratorySettings settings)
     {
-        currentSettings = settings;
+        currentLaboratorySettings = settings;
         UpdateAllUI();
     }
     void Awake()
@@ -27,11 +27,12 @@ public class LaboratoryUI : MonoBehaviour
     }
     private void OnAddWorkersButtonClicked()
     {
-        if (currentSettings.currentLaboratoryWorkers < currentSettings.maxLaboratoryWorkers)
+        if (currentLaboratorySettings.currentLaboratoryWorkers < currentLaboratorySettings.maxLaboratoryWorkers)
         {
-            currentSettings.currentLaboratoryWorkers += 1;
+            currentLaboratorySettings.currentLaboratoryWorkers += 1;
 
             UpdateAllUI();
+            UIController.Instance.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
         }
         else
         {
@@ -40,11 +41,12 @@ public class LaboratoryUI : MonoBehaviour
     }
     public void OnRemoveWorkersButtonClicked()
     {
-        if (currentSettings.currentLaboratoryWorkers > 0)
+        if (currentLaboratorySettings.currentLaboratoryWorkers > 0)
         {
-            currentSettings.currentLaboratoryWorkers -= 1;
+            currentLaboratorySettings.currentLaboratoryWorkers -= 1;
 
             UpdateAllUI();
+            UIController.Instance.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
         }
         else
         {
@@ -53,10 +55,10 @@ public class LaboratoryUI : MonoBehaviour
     }
     public void UpdateAllUI()
     {
-        efficiencyPercent = currentSettings.currentLabEfficiency = (currentSettings.currentLaboratoryWorkers / (float)currentSettings.maxLaboratoryWorkers) * 100;
-        researchTimeDependsOnWorkers = currentSettings.baseResearchTime - (currentSettings.currentLaboratoryWorkers * currentSettings.baseReduceResearchTimePerWorker);
+        efficiencyPercent = currentLaboratorySettings.currentLabEfficiency = (currentLaboratorySettings.currentLaboratoryWorkers / (float)currentLaboratorySettings.maxLaboratoryWorkers) * 100;
+        researchTimeDependsOnWorkers = currentLaboratorySettings.baseResearchTime - (currentLaboratorySettings.currentLaboratoryWorkers * currentLaboratorySettings.baseReduceResearchTimePerWorker);
 
-        currentWorkersText.text = "Current Workers: " + currentSettings.currentLaboratoryWorkers.ToString() + "/" + currentSettings.maxLaboratoryWorkers;
+        currentWorkersText.text = "Current Workers: " + currentLaboratorySettings.currentLaboratoryWorkers.ToString() + "/" + currentLaboratorySettings.maxLaboratoryWorkers;
         researchTimeText.text = "Research Time: " + researchTimeDependsOnWorkers.ToString() + " min";
         currentEfficiencyText.text = "Current Efficinecy: " + efficiencyPercent.ToString("F0") + "%";
     }

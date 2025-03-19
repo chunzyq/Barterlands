@@ -85,6 +85,13 @@ public class BuildManager : MonoBehaviour
         }
         currentBuildingPreview = Instantiate(buildingPrefab);
 
+        BuildingInstance previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
+        if (previewInstance != null)
+        {
+            previewInstance.isPreview = true;
+            BuildingInstance.allBuildingsInstance.Remove(previewInstance);
+        }
+
         Renderer renderer = currentBuildingPreview.GetComponent<Renderer>();
 
         if (renderer != null)
@@ -175,6 +182,7 @@ public class BuildManager : MonoBehaviour
     private void PlaceBuilding()
     {
         if (currentBuildingPreview == null) return;
+        currentBuildingPreview.GetComponent<BuildingInstance>().isPreview = true;
 
         GameObject newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
 
@@ -188,7 +196,20 @@ public class BuildManager : MonoBehaviour
         if (buildingInstance != null)
         {
             buildingInstance.GenerateUniqueID();
+            
+            if (buildingInstance.buildingData.buildingType == BuildingType.Laboratory)
+            {
+                UIController.Instance.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
+            }
         }
+
+        Destroy(currentBuildingPreview);
+        currentBuildingPreview = null;
+
+        // if (buildingInstance.buildingData.buildingType == BuildingType.Factory)
+        // {
+        //     UIController.Instance.mainInterfaceUI.UpdateIntefaceFactoryUI();
+        // }
         
         inBuildMode = false;
     }

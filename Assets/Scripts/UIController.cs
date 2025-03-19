@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using DG.Tweening;
+using NUnit.Framework.Constraints;
 
 public class UIController : MonoBehaviour
 {
     public static UIController Instance;
     private BuildingData buildingData;
+    public InterfaceUI mainInterfaceUI;
 
     public GameObject industialUIPrefab;
     public GameObject scientificUIPrefab;
     public GameObject generalUIPrefab;
     private GameObject activeBuildingUI;
-
-    public Dictionary<string, FactorySettings> allFactorySettings = new Dictionary<string, FactorySettings>();
 
     private void Awake()
     {
@@ -44,6 +45,10 @@ public class UIController : MonoBehaviour
         if (prefabToInstantiate != null)
         {
             activeBuildingUI = Instantiate(prefabToInstantiate, transform);
+
+            // activeBuildingUI.transform.localScale = Vector3.zero;
+
+            // activeBuildingUI.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutCirc);
 
             if (building.buildingData.buildingType == BuildingType.Factory)
             {
