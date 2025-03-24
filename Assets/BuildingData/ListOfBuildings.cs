@@ -10,6 +10,8 @@ public class ListOfBuildings : MonoBehaviour
     public List<BuildingData> industrialBuildings;
     public List<BuildingData> scientificBuildings;
     public List<BuildingData> generalBuildings;
+    public List<BuildingData> economicBuildings;
+    public List<BuildingData> medicalBuildings;
 
     void Awake()
     {
@@ -23,6 +25,8 @@ public class ListOfBuildings : MonoBehaviour
         industrialBuildings = allBuildings.Where(b => b.buildingID == "0").ToList();
         generalBuildings = allBuildings.Where(b => b.buildingID == "1").ToList();
         scientificBuildings = allBuildings.Where(b => b.buildingID == "2").ToList();
+        economicBuildings = allBuildings.Where(b => b.buildingID == "3").ToList();
+        medicalBuildings = allBuildings.Where(b => b.buildingID == "4").ToList();
 
     }
     private void AddBuilding(BuildingData building)

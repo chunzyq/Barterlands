@@ -4,5 +4,15 @@ public enum BuildingType
 {
     Factory,
     Laboratory,
-    House
+    House,
+    Radiostation,
+    Infirmary,
+    FirstAidStation,
+    Workshop,
+    ElectroStation,
+    Market,
+    Warehouse,
+    Shelter,
+    ObservationPost,
+    FiltrationStation
 }

@@ -903,10 +903,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b9503fc93335f1846b24cbaae2c404ba, type: 2}
   - {fileID: 11400000, guid: 5cf7b39ca3d3333448bb5386f438f709, type: 2}
   - {fileID: 11400000, guid: 77e3b702a2c526a409b03032481b0efd, type: 2}
+  - {fileID: 11400000, guid: 5b895daddf161a349bcf896c23ef48f9, type: 2}
+  - {fileID: 11400000, guid: cce07d85ea8690945b7f2303ff36ef18, type: 2}
+  - {fileID: 11400000, guid: 49c4eac33433b824fbe1cbbe06d1f14e, type: 2}
+  - {fileID: 11400000, guid: b59a1dfd27b8ac949a1bb8fa5ea14403, type: 2}
+  - {fileID: 11400000, guid: 2e8a0fba2c7397d4389d668791a2c21d, type: 2}
+  - {fileID: 11400000, guid: 25d3b55739007254c81f3901c6633fb5, type: 2}
+  - {fileID: 11400000, guid: 3e480c8bc349a5d43bffc487540c303b, type: 2}
+  - {fileID: 11400000, guid: 3116a502c68417741b0d724462d1662a, type: 2}
+  - {fileID: 11400000, guid: 16dfa5abc3871dd4a8676acd01948449, type: 2}
+  - {fileID: 11400000, guid: 11d7058b2e261ac4393c42348f08c8bd, type: 2}
   containerBuildings: []
   industrialBuildings: []
   scientificBuildings: []
   generalBuildings: []
+  economicBuildings: []
+  medicalBuildings: []
 --- !u!4 &449976214
 Transform:
   m_ObjectHideFlags: 0
@@ -1581,7 +1593,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
+  m_CellSize: {x: 64, y: 64}
   m_Spacing: {x: 20, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2

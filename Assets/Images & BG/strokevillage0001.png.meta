@@ -162,7 +162,7 @@ TextureImporter:
         width: 536
         height: 708
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -171,6 +171,28 @@ TextureImporter:
       bones: []
       spriteID: d4fa7911cf11f3e4583bd982f6028665
       internalID: -1440905493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: radiostation_icon
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 175
+        width: 622
+        height: 629
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3547bf823624d44f98a16bfbb1da24a
+      internalID: -948794396
       vertices: []
       indices: 
       edges: []
@@ -192,6 +214,7 @@ TextureImporter:
       factory: 1539695515
       house: -1440905493
       laboratory: -62891176
+      radiostation_icon: -948794396
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
