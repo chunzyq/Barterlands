@@ -15,6 +15,8 @@ public class UIController : MonoBehaviour
     public GameObject generalUIPrefab;
     private GameObject activeBuildingUI;
 
+    public BuildingInstance currentBuildingInstance;
+
     private void Awake()
     {
         Instance = this;
@@ -22,6 +24,9 @@ public class UIController : MonoBehaviour
 
     public void OpenBuildingUI(BuildingInstance building)
     {
+
+        currentBuildingInstance = building;
+
         if (activeBuildingUI != null)
         {
             Destroy(activeBuildingUI);
@@ -65,6 +70,24 @@ public class UIController : MonoBehaviour
                 HouseUI ui = activeBuildingUI.GetComponent<HouseUI>();
                 ui.UpdateUI(building.houseSettings);
             }
+        }
+    }
+
+    public void DeleteCurrentBuilding()
+    {
+        if (currentBuildingInstance != null)
+        {
+            Destroy(currentBuildingInstance.gameObject);
+            currentBuildingInstance = null;
+        }
+        if (activeBuildingUI != null)
+        {
+            Destroy(activeBuildingUI);
+            activeBuildingUI = null;
+        }
+        if (mainInterfaceUI != null)
+        {
+            mainInterfaceUI.UpdateIntefaceLaboratoryUI();
         }
     }
 }

@@ -10,6 +10,7 @@ public class FactoryUI : MonoBehaviour
     public TextMeshProUGUI currentEfficiencyText;
     public Button addWorkersButton;
     public Button removeWorkersButton;
+    public Button deleteBuildingButton;
 
     public float efficiencyPercent;
     public int productionRate;
@@ -27,7 +28,14 @@ public class FactoryUI : MonoBehaviour
     {
         addWorkersButton.onClick.AddListener(OnAddWorkersButtonClicked);
         removeWorkersButton.onClick.AddListener(OnRemoveWorkersButtonClicked);
+        deleteBuildingButton.onClick.AddListener(OnDeleteBuildingButtonClicked);
     }
+
+    private void OnDeleteBuildingButtonClicked()
+    {
+        UIController.Instance.DeleteCurrentBuilding();
+    }
+
     public void OnAddWorkersButtonClicked()
     {
         if (currentFactorySettings.currentFactoryWorkers < currentFactorySettings.maxFactoryWorkers)
