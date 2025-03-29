@@ -64,6 +64,7 @@ public class BuildManager : MonoBehaviour
 
     public void SelectBuilding(GameObject building)
     {
+
         if (currentBuildingPreview != null)
         {
             Destroy(currentBuildingPreview);
@@ -182,6 +183,34 @@ public class BuildManager : MonoBehaviour
     private void PlaceBuilding()
     {
         if (currentBuildingPreview == null) return;
+
+        BuildingInstance previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
+
+        if (previewInstance != null && previewInstance.buildingData.buildingType == BuildingType.Factory)
+        {
+            int factoryCost = 30;
+            bool canBuild = ResourseManager.Instance.SpendMetal(factoryCost);
+            if (!canBuild)
+            {
+                Debug.Log("Недостаточно ресурса: металл");
+                Destroy(currentBuildingPreview);
+                currentBuildingPreview = null;
+                return;
+            }
+        }
+        else if (previewInstance != null && previewInstance.buildingData.buildingType == BuildingType.Laboratory)
+        {
+            int laboratoryCost = 60;
+            bool canBuild = ResourseManager.Instance.SpendMetal(laboratoryCost);
+            if (!canBuild)
+            {
+                Debug.Log("Недостаточно ресурса: металл");
+                Destroy(currentBuildingPreview);
+                currentBuildingPreview = null;
+                return;
+            }
+        }
+
         currentBuildingPreview.GetComponent<BuildingInstance>().isPreview = true;
 
         GameObject newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
@@ -201,16 +230,14 @@ public class BuildManager : MonoBehaviour
             {
                 UIController.Instance.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
             }
+            else if (buildingInstance.buildingData.buildingType == BuildingType.Factory)
+            {
+                UIController.Instance.mainInterfaceUI.UpdateIntefaceFactoryUI();
+            }
         }
 
         Destroy(currentBuildingPreview);
         currentBuildingPreview = null;
-
-        // if (buildingInstance.buildingData.buildingType == BuildingType.Factory)
-        // {
-        //     UIController.Instance.mainInterfaceUI.UpdateIntefaceFactoryUI();
-        // }
-        
         inBuildMode = false;
     }
 
@@ -229,6 +256,10 @@ public class BuildManager : MonoBehaviour
         }
 
     }
+    public void DeleteBuilding(BuildingInstance building)
+    {
+        Destroy(building);
+    }
 
     private void OnEnterBuildModeButtonClicked()
     {
@@ -238,5 +269,18 @@ public class BuildManager : MonoBehaviour
     {
         inBuildMode = false;
         buildingPanel.SetActive(false);
+    }
+
+    public void TryBuildFactory()
+    {
+        int factoryCost = 30;
+        if (ResourseManager.Instance.SpendMetal(factoryCost))
+        {
+            Debug.Log("Завод построен!");
+        }
+        else
+        {
+            Debug.Log("Недостаточно ресурса: металл");
+        }
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using DG.Tweening;
 using NUnit.Framework.Constraints;
+using System.Collections;
 
 public class UIController : MonoBehaviour
 {
@@ -77,6 +78,20 @@ public class UIController : MonoBehaviour
     {
         if (currentBuildingInstance != null)
         {
+
+            if (currentBuildingInstance.buildingData.buildingType == BuildingType.Factory)
+            {
+                int factoryCost = 30;
+                int refundAmount = Mathf.RoundToInt(factoryCost * 0.5f);
+                ResourseManager.Instance.RefundMetal(refundAmount);
+            }
+            else if (currentBuildingInstance.buildingData.buildingType == BuildingType.Laboratory)
+            {
+                int laboratoryCost = 60;
+                int refundAmount = Mathf.RoundToInt(laboratoryCost * 0.5f);
+                ResourseManager.Instance.RefundMetal(refundAmount);
+            }
+
             Destroy(currentBuildingInstance.gameObject);
             currentBuildingInstance = null;
         }
@@ -85,9 +100,18 @@ public class UIController : MonoBehaviour
             Destroy(activeBuildingUI);
             activeBuildingUI = null;
         }
+
+        StartCoroutine(DelayedUIUpdate());
+    }
+    private IEnumerator DelayedUIUpdate()
+    {
+        yield return null;
+
         if (mainInterfaceUI != null)
         {
             mainInterfaceUI.UpdateIntefaceLaboratoryUI();
+            mainInterfaceUI.UpdateIntefaceFactoryUI();
+            mainInterfaceUI.UpdateMetalText(ResourseManager.Instance.metalAmount);
         }
     }
 }

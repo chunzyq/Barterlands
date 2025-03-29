@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ public class LaboratoryUI : MonoBehaviour
     public TextMeshProUGUI currentEfficiencyText;
     public Button addWorkersButton;
     public Button removeWorkersButton;
+    public Button deleteBuildingButton;
 
     public float efficiencyPercent;
     public int researchTimeDependsOnWorkers;
@@ -24,7 +26,14 @@ public class LaboratoryUI : MonoBehaviour
     {
         addWorkersButton.onClick.AddListener(OnAddWorkersButtonClicked);
         removeWorkersButton.onClick.AddListener(OnRemoveWorkersButtonClicked);
+        deleteBuildingButton.onClick.AddListener(OnDeleteBuildingButtonClicked);
     }
+
+    private void OnDeleteBuildingButtonClicked()
+    {
+        UIController.Instance.DeleteCurrentBuilding();
+    }
+
     private void OnAddWorkersButtonClicked()
     {
         if (currentLaboratorySettings.currentLaboratoryWorkers < currentLaboratorySettings.maxLaboratoryWorkers)

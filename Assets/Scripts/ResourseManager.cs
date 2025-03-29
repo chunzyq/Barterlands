@@ -5,9 +5,9 @@ public class ResourseManager : MonoBehaviour
 {
     public static ResourseManager Instance;
 
-    public int metalAmount = 0;
+    public int metalAmount = 30;
     public float productionInterval = 15f;
-    public int metalPerFactory = 5;
+    public int metalPerFactory = 32;
 
     private void Awake()
     {
@@ -31,22 +31,50 @@ public class ResourseManager : MonoBehaviour
         {
             yield return new WaitForSeconds(productionInterval);
 
-            int factoryCount = 0;
+            int totalProduction = 0;
 
             foreach (BuildingInstance building in BuildingInstance.allBuildingsInstance)
             {
                 if (building.buildingData.buildingType == BuildingType.Factory)
                 {
-                    factoryCount++;
+                    float efficiencyFactor = building.factorySettings.currentFacEfficiency / 100f;
+                    totalProduction += Mathf.RoundToInt(metalPerFactory * efficiencyFactor);
+
                 }
             }
 
-            metalAmount += factoryCount * metalPerFactory;
+            metalAmount += totalProduction;
 
             if (UIController.Instance != null && UIController.Instance.mainInterfaceUI != null)
             {
                 UIController.Instance.mainInterfaceUI.UpdateMetalText(metalAmount);
             }
+        }
+    }
+
+    public bool SpendMetal(int cost)
+    {
+        if (metalAmount >= cost)
+        {
+            metalAmount -= cost;
+            if (UIController.Instance != null && UIController.Instance.mainInterfaceUI != null)
+            {
+                UIController.Instance.mainInterfaceUI.UpdateMetalText(metalAmount);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public void RefundMetal(int amount)
+    {
+        metalAmount += amount;
+
+        if (UIController.Instance != null && UIController.Instance.mainInterfaceUI != null)
+        {
+            UIController.Instance.mainInterfaceUI.UpdateMetalText(metalAmount);
         }
     }
 }

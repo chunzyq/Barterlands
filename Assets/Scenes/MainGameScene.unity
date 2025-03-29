@@ -382,6 +382,7 @@ MonoBehaviour:
   industialUIPrefab: {fileID: 8909680859975762492, guid: 016cd623e0f568a42814ccc521b46648, type: 3}
   scientificUIPrefab: {fileID: 5916455165949225883, guid: f2e7a80ad123f8c4d83979e331fcff88, type: 3}
   generalUIPrefab: {fileID: 765336406114507526, guid: 64dc75c567daffb408a41a41b7785533, type: 3}
+  currentBuildingInstance: {fileID: 0}
 --- !u!1 &213524269
 GameObject:
   m_ObjectHideFlags: 0
@@ -2319,7 +2320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a5f6ba34fa49c1459415efde67d8132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  metalAmount: 0
+  metalAmount: 200
   productionInterval: 3
   metalPerFactory: 5
 --- !u!4 &1507734116
