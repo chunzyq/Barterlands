@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class MenuController : MonoBehaviour
 {
     public static MenuController Instance;
+
+    [Header("Меню")]
     [SerializeField] private GameObject pauseMenu = null;
     [SerializeField] private GameObject mainMenu = null;
     public Canvas pauseMenuCanvas;
@@ -19,8 +21,40 @@ public class MenuController : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
+
+
+    private void Start()
+    {
+        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenuScene")
+        {
+
+            if (mainMenu != null) mainMenu.SetActive(true);
+            if (pauseMenu != null) pauseMenu.SetActive(false);
+
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+        }
+    }
+
     private void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex == 1)
@@ -70,7 +104,7 @@ public class MenuController : MonoBehaviour
     }
     public void OnPauseQuitBtnClicked()
     {
-        SceneManager.LoadScene("MainMenuScene");
         ResumeGame();
+        SceneManager.LoadScene("MainMenuScene");
     }
 }
