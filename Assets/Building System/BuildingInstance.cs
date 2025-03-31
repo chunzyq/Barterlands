@@ -56,6 +56,36 @@ public class BuildingInstance : MonoBehaviour
         Debug.Log(InstanceID);
     }
 
+    public void SetInstanceID(string id)
+    {
+        InstanceID = id;
+    }
+
+    public BuildingSaveData GetSaveData()
+    {
+        BuildingSaveData data = new BuildingSaveData();
+        data.instanceID = InstanceID;
+        data.buildingID = buildingData.buildingID; // предполагается, что в BuildingData есть поле buildingID
+        data.position = transform.position;
+        data.rotation = transform.eulerAngles;
+
+        // Сохраняем настройки, если они применимы для данного типа здания
+        switch (buildingData.buildingType)
+        {
+            case BuildingType.Factory:
+                data.factorySettings = factorySettings;
+                break;
+            case BuildingType.Laboratory:
+                data.laboratorySettings = laboratorySettings;
+                break;
+            case BuildingType.House:
+                data.houseSettings = houseSettings;
+                break;
+        }
+
+        return data;
+    }
+
     private void OnMouseDown()
     {
         if (!canOpenUI)
