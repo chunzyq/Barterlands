@@ -65,11 +65,15 @@ public class BuildingInstance : MonoBehaviour
     {
         BuildingSaveData data = new BuildingSaveData();
         data.instanceID = InstanceID;
-        data.buildingID = buildingData.buildingID; // предполагается, что в BuildingData есть поле buildingID
+        data.buildingID = buildingData.buildingID;
         data.position = transform.position;
         data.rotation = transform.eulerAngles;
 
-        // Сохраняем настройки, если они применимы для данного типа здания
+        data.factorySettings = null;
+        data.laboratorySettings = null;
+        data.houseSettings = null;
+
+
         switch (buildingData.buildingType)
         {
             case BuildingType.Factory:
@@ -84,6 +88,31 @@ public class BuildingInstance : MonoBehaviour
         }
 
         return data;
+    }
+
+    public void ApplySaveData(BuildingSaveData data)
+    {
+        switch (buildingData.buildingType)
+        {
+            case BuildingType.Factory:
+                if (data.factorySettings != null)
+                {
+                    factorySettings = data.factorySettings;
+                }
+                break;
+            case BuildingType.Laboratory:
+                if (data.laboratorySettings != null)
+                {
+                    laboratorySettings = data.laboratorySettings;
+                }
+                break;
+            case BuildingType.House:
+                if (data.houseSettings != null)
+                {
+                    houseSettings = data.houseSettings;
+                }
+                break;
+        }
     }
 
     private void OnMouseDown()

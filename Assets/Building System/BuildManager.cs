@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -236,9 +237,18 @@ public class BuildManager : MonoBehaviour
             }
         }
 
+        StartCoroutine(DelayedUIUpdate());
         Destroy(currentBuildingPreview);
         currentBuildingPreview = null;
         inBuildMode = false;
+    }
+
+    private IEnumerator DelayedUIUpdate()
+    {
+        yield return null;
+
+        PlaceBuilding();
+        
     }
 
     private void ExitBuildMode()
