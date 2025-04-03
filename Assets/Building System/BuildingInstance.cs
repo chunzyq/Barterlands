@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class BuildingInstance : MonoBehaviour
 {
+    public static BuildingInstance Instance;
     public static List<BuildingInstance> allBuildingsInstance = new List<BuildingInstance>();
     public string InstanceID {get; private set;} // создаётся поле для уникального ID здания, у которого есть публичный доступ для ДОСТУПА, но приватный доступ для изменения
 
@@ -14,9 +18,13 @@ public class BuildingInstance : MonoBehaviour
 
     private bool canOpenUI = false;
     public bool isPreview = false;
+    public bool isSelected { get; private set; }
+    private Outline outline;
+
 
     private void Awake()
     {
+        Instance = this;
         if (!isPreview)
         {
             allBuildingsInstance.Add(this);
@@ -42,6 +50,12 @@ public class BuildingInstance : MonoBehaviour
     }
     private void Start()
     {
+        outline = GetComponent<Outline>();
+
+        if (outline != null)
+        {
+            outline.enabled = false;
+        }
         StartCoroutine(EnableUIInteraction());
     }
 
@@ -121,8 +135,26 @@ public class BuildingInstance : MonoBehaviour
         {
             return;
         }
+        
+        if (MenuController.Instance.isPaused == false)
+        {
+            UIController.Instance.OpenBuildingUI(this);
+            Debug.Log("Clicked");
+            if (outline != null)
+            {
+                outline.enabled = true;
+                Debug.Log("Обводка включена!");
+            }
 
-        UIController.Instance.OpenBuildingUI(this); // при нажатии на ЛКМ на здание - инфа о нём передаётся в UIController в функцию
-        Debug.Log("Clicked");
+            isSelected = true;
+        }
+    }
+    public void Deselect()
+    {
+        isSelected = false;
+        if (outline != null)
+        {
+            outline.enabled = false;
+        }
     }
 }

@@ -3406,6 +3406,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 64
   validPlacementMaterial: {fileID: 2100000, guid: b75c1f2835039c248943070a23c23237, type: 2}
   invalidPlacementMaterial: {fileID: 2100000, guid: 27eb213731ea24c4b8a1b435fd966e84, type: 2}
 --- !u!4 &2091139566

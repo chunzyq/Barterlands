@@ -1,8 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using DG.Tweening;
-using NUnit.Framework.Constraints;
 using System.Collections;
 
 public class UIController : MonoBehaviour
@@ -72,6 +68,19 @@ public class UIController : MonoBehaviour
                 ui.UpdateUI(building.houseSettings);
             }
         }
+    }
+
+    public void CloseBuildingUI()
+    {
+        if (activeBuildingUI != null)
+        {
+            Destroy(activeBuildingUI);
+            activeBuildingUI = null;
+            currentBuildingInstance = null;
+
+            BuildingInstance.Instance.Deselect();
+        }
+        
     }
 
     public void DeleteCurrentBuilding()

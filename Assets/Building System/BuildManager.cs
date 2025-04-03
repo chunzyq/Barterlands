@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -24,8 +25,12 @@ public class BuildManager : MonoBehaviour
 
     [SerializeField] private float gridSize = 1.0f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask buildingLayer;
     [SerializeField] private Material validPlacementMaterial;
     [SerializeField] private Material invalidPlacementMaterial;
+
+    private GameObject newBuilding;
+    private Outline outline;
 
 
     void Start()
@@ -61,6 +66,24 @@ public class BuildManager : MonoBehaviour
                 ExitBuildMode();
             }
         }
+
+        if (MenuController.Instance.isPaused == false)
+        {
+            MouseOnBuilding();
+        }
+        if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (!Physics.Raycast(ray, out hit, 100f, buildingLayer))
+            {
+                if (UIController.Instance.currentBuildingInstance != null)
+                {
+                    UIController.Instance.CloseBuildingUI();
+                }
+            }
+        }
     }
 
     public void SelectBuilding(GameObject building)
@@ -88,6 +111,10 @@ public class BuildManager : MonoBehaviour
         currentBuildingPreview = Instantiate(buildingPrefab);
 
         BuildingInstance previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
+        outline = currentBuildingPreview.GetComponent<Outline>();
+
+        outline.enabled = false;
+
         if (previewInstance != null)
         {
             previewInstance.isPreview = true;
@@ -214,7 +241,7 @@ public class BuildManager : MonoBehaviour
 
         currentBuildingPreview.GetComponent<BuildingInstance>().isPreview = true;
 
-        GameObject newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
+        newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
 
         Renderer renderer = newBuilding.GetComponent<Renderer>();
         if (renderer != null && originalMaterial != null)
@@ -222,7 +249,11 @@ public class BuildManager : MonoBehaviour
             renderer.material = originalMaterial;
         }
 
+        outline = newBuilding.GetComponent<Outline>();
+        outline.enabled = false;
+
         BuildingInstance buildingInstance = newBuilding.GetComponent<BuildingInstance>();
+
         if (buildingInstance != null)
         {
             buildingInstance.GenerateUniqueID();
@@ -243,11 +274,43 @@ public class BuildManager : MonoBehaviour
         inBuildMode = false;
     }
 
+    private void MouseOnBuilding()
+    {
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 100f, buildingLayer) && MenuController.Instance.isPaused == false)
+        {
+            BuildingInstance buildingInstance = hit.collider.GetComponent<BuildingInstance>();
+            Outline currentOutline = hit.collider.GetComponent<Outline>();
+            
+            if (currentOutline != null && buildingInstance != null && !buildingInstance.isSelected)
+            {
+                currentOutline.enabled = true;
+            }
+
+            outline = currentOutline;
+        }
+        else
+        {
+            if (outline != null)
+            {
+                BuildingInstance buildingInstance = outline.GetComponent<BuildingInstance>();
+
+                if (buildingInstance != null && !buildingInstance.isSelected)
+                {
+                    outline.enabled = false;
+                }
+            }
+        }
+    }
+
     private IEnumerator DelayedUIUpdate()
     {
         yield return null;
 
-        PlaceBuilding();
+        UIController.Instance.mainInterfaceUI.UpdateMetalText(ResourseManager.Instance.metalAmount);
         
     }
 
