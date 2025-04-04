@@ -14,6 +14,8 @@ public class MenuController : MonoBehaviour
     [SerializeField] private GameObject mainMenu = null;
     public Canvas pauseMenuCanvas;
     public bool isPaused = false;
+    public AudioClip clickSound;
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -33,6 +35,7 @@ public class MenuController : MonoBehaviour
     private void Start()
     {
         OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     private void OnDestroy()
@@ -70,10 +73,15 @@ public class MenuController : MonoBehaviour
     public void OnStartGameButtonClicked()
     {
         SceneManager.LoadScene("MainGameScene");
+        audioSource.PlayOneShot(clickSound);
     }
     public void OnQuitButtoncClicked()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        audioSource.PlayOneShot(clickSound);
+    }
+    public void OnSettingsButtonClicked()
+    {
+        audioSource.PlayOneShot(clickSound);
     }
     public void TogglePauseMenu()
     {

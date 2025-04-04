@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
     
     [Header("Музыка меню")]
     [SerializeField] private AudioClip menuMusic;
-    [SerializeField] private float musicVolume = 0.5f;
+    [SerializeField] private float musicVolume = 0.3f;
     [SerializeField] private float fadeDuration = 1.0f;
     
     private AudioSource musicSource;
