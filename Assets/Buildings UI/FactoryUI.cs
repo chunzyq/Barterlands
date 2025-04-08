@@ -43,7 +43,6 @@ public class FactoryUI : MonoBehaviour
             currentFactorySettings.currentFactoryWorkers += 1;
 
             UpdateAllUI();
-            // UIController.Instance.mainInterfaceUI.UpdateIntefaceFactoryUI();
         }
         else
         {
@@ -66,11 +65,30 @@ public class FactoryUI : MonoBehaviour
     }
     public void UpdateAllUI()
     {
+
         efficiencyPercent = currentFactorySettings.currentFacEfficiency = (currentFactorySettings.currentFactoryWorkers / (float)currentFactorySettings.maxFactoryWorkers) * 100;
         productionRate = currentFactorySettings.currentFactoryWorkers * currentFactorySettings.baseProductionRatePerWorker;
 
         currentWorkersText.text = "Current Workers: " + currentFactorySettings.currentFactoryWorkers.ToString() + "/" + currentFactorySettings.maxFactoryWorkers;
         currentEfficiencyText.text = "Current Efficiency: " + efficiencyPercent.ToString("F0") + "%";
         productionRateText.text = "Production Rate: " + productionRate.ToString() + "/h";
+
+        if (currentFactorySettings.currentFactoryWorkers == currentFactorySettings.maxFactoryWorkers)
+        {
+            addWorkersButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            addWorkersButton.gameObject.SetActive(true);
+        }
+
+        if (currentFactorySettings.currentFactoryWorkers == 0)
+        {
+            removeWorkersButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            removeWorkersButton.gameObject.SetActive(true);
+        }
     }
 }

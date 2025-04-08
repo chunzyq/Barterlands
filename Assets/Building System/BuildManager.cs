@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
@@ -70,6 +71,11 @@ public class BuildManager : MonoBehaviour
         if (MenuController.Instance.isPaused == false)
         {
             MouseOnBuilding();
+
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                SceneManager.LoadScene("MapScene");
+            }
         }
         if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
@@ -153,6 +159,13 @@ public class BuildManager : MonoBehaviour
             float x = Mathf.Round(hit.point.x / gridSize) * gridSize;
             float z = Mathf.Round(hit.point.z / gridSize) * gridSize;
             float y = hit.point.y;
+
+            Collider collider = currentBuildingPreview.GetComponent<Collider>();
+
+            if (collider != null)
+            {
+                y += collider.bounds.extents.y;
+            }
 
             Vector3 snappedPosition = new Vector3(x, y, z);
             currentBuildingPreview.transform.position = snappedPosition;

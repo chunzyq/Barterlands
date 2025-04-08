@@ -70,5 +70,23 @@ public class LaboratoryUI : MonoBehaviour
         currentWorkersText.text = "Current Workers: " + currentLaboratorySettings.currentLaboratoryWorkers.ToString() + "/" + currentLaboratorySettings.maxLaboratoryWorkers;
         researchTimeText.text = "Research Time: " + researchTimeDependsOnWorkers.ToString() + " min";
         currentEfficiencyText.text = "Current Efficinecy: " + efficiencyPercent.ToString("F0") + "%";
+
+        if (currentLaboratorySettings.currentLaboratoryWorkers == currentLaboratorySettings.maxLaboratoryWorkers)
+        {
+            addWorkersButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            addWorkersButton.gameObject.SetActive(true);
+        }
+
+        if (currentLaboratorySettings.currentLaboratoryWorkers == 0)
+        {
+            removeWorkersButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            removeWorkersButton.gameObject.SetActive(true);
+        }
     }
 }
