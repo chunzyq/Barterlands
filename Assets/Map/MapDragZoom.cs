@@ -10,6 +10,9 @@ public class MapDragZoom : MonoBehaviour, IBeginDragHandler, IDragHandler, IScro
     public float minZoom = 0.5f;
     public float maxZoom = 2.5f;
 
+    private Vector2 baseMapSize;
+    public RectTransform canvasRectTransform;
+
     private RectTransform mapRectTransform;
     private Vector2 lastMousePosition;
 
@@ -20,6 +23,7 @@ public class MapDragZoom : MonoBehaviour, IBeginDragHandler, IDragHandler, IScro
         {
             Debug.LogError("MapDragZoom не обнаружил RectTransform на объекте!");
         }
+        baseMapSize = mapRectTransform.sizeDelta;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -30,7 +34,17 @@ public class MapDragZoom : MonoBehaviour, IBeginDragHandler, IDragHandler, IScro
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 delta = eventData.position - lastMousePosition;
-        mapRectTransform.anchoredPosition += delta * dragSensitivity;
+        Vector2 newPos = mapRectTransform.anchoredPosition + delta * dragSensitivity;
+
+        float currentScale = mapRectTransform.localScale.x;
+        Vector2 mapCurrentSize = baseMapSize * currentScale;
+        Vector2 canvasSize = canvasRectTransform.rect.size;
+        Vector2 clampValues = (mapCurrentSize - canvasSize) / 2;
+
+        newPos.x = Mathf.Clamp(newPos.x, -clampValues.x, clampValues.x);
+        newPos.y = Mathf.Clamp(newPos.y, -clampValues.y, clampValues.y);
+
+        mapRectTransform.anchoredPosition = newPos;
         lastMousePosition = eventData.position;
     }
 
