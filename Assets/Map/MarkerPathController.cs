@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,10 @@ public class MarkerPathController : MonoBehaviour
     [Header("Скорость движения (в ед./сек)")]
     public float moveSpeed = 200f;
 
+    public event Action<MapPointData> OnTargetReached;
+
     RectTransform targetRect;
+    MapPointData targetData;
     bool isMoving = false;
 
     void Start()
@@ -22,11 +26,17 @@ public class MarkerPathController : MonoBehaviour
         lineRect.gameObject.SetActive(false);
     }
 
+    void LateUpdate()
+    {
+        markerRect.SetAsLastSibling();
+    }
+
     // Вызываем из MapManager при клике на точку
-    public void SetTarget(RectTransform target)
+    public void SetTarget(RectTransform target, MapPointData data)
     {
         if (isMoving) return;
         targetRect = target;
+        targetData = data;
         lineRect.gameObject.SetActive(true);
         DrawLine();
     }
@@ -77,5 +87,8 @@ public class MarkerPathController : MonoBehaviour
         isMoving = false;
         // если линия больше не нужна
         lineRect.gameObject.SetActive(false);
+
+        OnTargetReached?.Invoke(targetData);
+        
     }
 }

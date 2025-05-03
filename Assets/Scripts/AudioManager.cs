@@ -18,7 +18,6 @@ public class AudioManager : MonoBehaviour
     
     private void Awake()
     {
-        Debug.Log("AudioManager: Awake");
         // Singleton реализация
         if (Instance == null)
         {
@@ -30,7 +29,6 @@ public class AudioManager : MonoBehaviour
             if (musicSource == null)
             {
                 musicSource = gameObject.AddComponent<AudioSource>();
-                Debug.Log("AudioManager: AudioSource добавлен");
             }
             
             // Базовые настройки
@@ -49,7 +47,6 @@ public class AudioManager : MonoBehaviour
         }
         else if (Instance != this)
         {
-            Debug.Log("AudioManager: Уничтожен дублирующий экземпляр");
             Destroy(gameObject);
         }
     }
@@ -59,14 +56,12 @@ public class AudioManager : MonoBehaviour
         // Запускаем музыку для текущей сцены
         Scene currentScene = SceneManager.GetActiveScene();
         CheckSceneForMusic(currentScene);
-        Debug.Log("AudioManager: Start - проверка начальной сцены: " + currentScene.name);
     }
     
     private void OnDestroy()
     {
         // Отписываемся от события при удалении объекта
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        Debug.Log("AudioManager: OnDestroy");
     }
     
     private void Update()
@@ -80,7 +75,6 @@ public class AudioManager : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("AudioManager: Загружена сцена: " + scene.name);
         CheckSceneForMusic(scene);
     }
     
@@ -96,19 +90,16 @@ public class AudioManager : MonoBehaviour
         {
             // На всех других сценах останавливаем музыку
             StopMusic();
-            Debug.Log("AudioManager: Музыка остановлена, так как текущая сцена не MainMenuScene");
         }
     }
     
     public void PlayMenuMusic()
     {
-        Debug.Log("AudioManager: PlayMenuMusic вызван");
         if (musicSource != null && menuMusic != null)
         {
             // Если сейчас играет другой трек или не играет совсем
             if (musicSource.clip != menuMusic || !musicSource.isPlaying)
             {
-                Debug.Log("AudioManager: Начинаем воспроизведение музыки меню");
                 musicSource.clip = menuMusic;
                 
                 // Если источник не играет, начинаем с нулевой громкости
@@ -117,7 +108,6 @@ public class AudioManager : MonoBehaviour
                     musicSource.volume = 0f;
                     musicSource.Play();
                     StartFade(0f, musicVolume);
-                    Debug.Log("AudioManager: Музыка запущена с начала");
                 }
                 // Если играет другой трек, делаем кроссфейд
                 else
@@ -127,7 +117,6 @@ public class AudioManager : MonoBehaviour
                     musicSource.volume = 0f;
                     musicSource.Play();
                     StartFade(0f, musicVolume);
-                    Debug.Log("AudioManager: Смена трека с кроссфейдом");
                 }
             }
             else
@@ -149,7 +138,6 @@ public class AudioManager : MonoBehaviour
         if (musicSource != null && musicSource.isPlaying)
         {
             StartFade(musicSource.volume, 0f);
-            Debug.Log("AudioManager: Остановка музыки");
         }
     }
     
@@ -160,7 +148,6 @@ public class AudioManager : MonoBehaviour
         targetVolume = to;
         fadeTimer = 0f;
         isFading = true;
-        Debug.Log($"AudioManager: Начат фейд от {from} до {to}");
     }
     
     // Обработка плавного изменения громкости
@@ -176,13 +163,11 @@ public class AudioManager : MonoBehaviour
             if (t >= 1f)
             {
                 isFading = false;
-                Debug.Log("AudioManager: Фейд завершен, громкость: " + musicSource.volume);
                 
                 // Если громкость стала нулевой - останавливаем воспроизведение
                 if (targetVolume <= 0f && musicSource.isPlaying)
                 {
                     musicSource.Stop();
-                    Debug.Log("AudioManager: Музыка остановлена");
                 }
             }
         }
@@ -200,7 +185,6 @@ public class AudioManager : MonoBehaviour
         if (musicSource != null && !isFading)
         {
             musicSource.volume = musicVolume;
-            Debug.Log("AudioManager: Громкость установлена на " + musicVolume);
         }
     }
 }

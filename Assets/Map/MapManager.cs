@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class MapManager : MonoBehaviour
 {
@@ -9,30 +11,39 @@ public class MapManager : MonoBehaviour
     public GameObject pointPrefab;
     public Transform pointsParent;
     public MarkerPathController markerController;
+    bool isRaidBusy = false;
     private Dictionary<MapPointData, PointView> spawned = new Dictionary<MapPointData, PointView>();
 
     public void Start()
     {
+
+        markerController.OnTargetReached += OnPointSelected;
+
         foreach (var data in mapPoints)
         {
             if (data.isUnlocked)
             {
                 SpawnPoint(data);
             }
-        } 
+        }
     }
 
     void SpawnPoint(MapPointData data)
     {
         var go = Instantiate(pointPrefab, pointsParent);
+        var rt = go.GetComponent<RectTransform>();
         go.GetComponent<RectTransform>().anchoredPosition = data.pointPosition;
         var view = go.GetComponent<PointView>();
         view.Setup(data);
 
-        view.onPointSelected += (selectedData) => {
-        // найдём RectTransform этого View
-            var rt = go.GetComponent<RectTransform>();
-            markerController.SetTarget(rt);
+        view.onPointSelected += selectedData => {
+
+            if (isRaidBusy)
+            {
+                return;
+            }
+
+            markerController.SetTarget(rt, selectedData);
         };
         
         spawned[data] = view;
@@ -53,6 +64,7 @@ public class MapManager : MonoBehaviour
     IEnumerator RaidCoroutine(MapPointData mapPointData)
     {
 
+        isRaidBusy = true;
         Debug.Log($"Рейд на {mapPointData.pointName}...");
         yield return new WaitForSeconds(2f);
         Debug.Log($"Рейд завершён, открываем следующие точки...");
@@ -65,6 +77,8 @@ public class MapManager : MonoBehaviour
                 SpawnPoint(next);
             }
         }
+
+        isRaidBusy = false;
 
     }
 }

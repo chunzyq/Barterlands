@@ -67,16 +67,6 @@ public class BuildManager : MonoBehaviour
                 ExitBuildMode();
             }
         }
-
-        if (MenuController.Instance.isPaused == false)
-        {
-            MouseOnBuilding();
-
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                SceneManager.LoadScene("MapScene");
-            }
-        }
         if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
