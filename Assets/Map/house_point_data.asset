@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: house_point_data
   m_EditorClassIdentifier: 
   pointName: "\u0414\u043E\u043C"
-  pointPosition: {x: 100, y: 150}
-  isUnlocked: 1
+  pointPosition: {x: 201, y: -100}
+  isUnlocked: 0
   pointIcon: {fileID: 21300000, guid: 490c3018d1348e54baa99abbe53123d4, type: 3}
+  nextPoints:
+  - {fileID: 11400000, guid: fb378b70b36b8d0429cec93b9740a85c, type: 2}

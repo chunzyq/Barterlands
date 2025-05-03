@@ -8,28 +8,34 @@ public class MapManager : MonoBehaviour
 
     public GameObject pointPrefab;
     public Transform pointsParent;
+    public MarkerPathController markerController;
+    private Dictionary<MapPointData, PointView> spawned = new Dictionary<MapPointData, PointView>();
 
     public void Start()
     {
-        InitializeMap();   
+        foreach (var data in mapPoints)
+        {
+            if (data.isUnlocked)
+            {
+                SpawnPoint(data);
+            }
+        } 
     }
 
-    public void InitializeMap()
+    void SpawnPoint(MapPointData data)
     {
-        foreach (var pointData in mapPoints)
-        {
-            GameObject pointGO = Instantiate(pointPrefab, pointsParent);
+        var go = Instantiate(pointPrefab, pointsParent);
+        go.GetComponent<RectTransform>().anchoredPosition = data.pointPosition;
+        var view = go.GetComponent<PointView>();
+        view.Setup(data);
 
-            pointGO.GetComponent<RectTransform>().anchoredPosition = pointData.pointPosition;
-
-            PointView view = pointGO.GetComponent<PointView>();
-
-            if (view != null)
-            {
-                view.Setup(pointData);
-                view.onPointSelected += OnPointSelected;
-            }
-        }
+        view.onPointSelected += (selectedData) => {
+        // найдём RectTransform этого View
+            var rt = go.GetComponent<RectTransform>();
+            markerController.SetTarget(rt);
+        };
+        
+        spawned[data] = view;
     }
 
     public void OnPointSelected(MapPointData mapPointData)
@@ -46,8 +52,19 @@ public class MapManager : MonoBehaviour
 
     IEnumerator RaidCoroutine(MapPointData mapPointData)
     {
-        Debug.Log($"Начало рейда на точку {mapPointData.pointName}...");
-        yield return new WaitForSeconds(2.0f);
-        Debug.Log($"Рейд на точке {mapPointData.pointName} завершён. Обработка результатов...");
+
+        Debug.Log($"Рейд на {mapPointData.pointName}...");
+        yield return new WaitForSeconds(2f);
+        Debug.Log($"Рейд завершён, открываем следующие точки...");
+
+        foreach (var next in mapPointData.nextPoints)
+        {
+            if (!next.isUnlocked)
+            {
+                next.isUnlocked = true;
+                SpawnPoint(next);
+            }
+        }
+
     }
 }

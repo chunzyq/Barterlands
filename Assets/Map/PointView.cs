@@ -12,6 +12,7 @@ public class PointView : MonoBehaviour
 
     private MapPointData mapPointData;
 
+
     public UnityAction<MapPointData> onPointSelected;
 
     public void Setup(MapPointData data)
