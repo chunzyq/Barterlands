@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -42,11 +43,51 @@ public class BuildingInstance : MonoBehaviour
                 laboratorySettings = new LaboratorySettings();
                 break;
         }
+
+        SettlementManager.Instance.RegisterBuilding(this);
     }
 
     private void OnDestroy()
     {
         allBuildingsInstance.Remove(this);
+        SettlementManager.Instance.UnregisterBuilding(this);
+    }
+
+    public int CurrentWorkerCount
+    {
+        get
+        {
+            switch (buildingData.buildingType)
+            {
+                case BuildingType.Factory:
+                    return factorySettings.currentFactoryWorkers;
+                case BuildingType.Laboratory:
+                    return laboratorySettings.currentLaboratoryWorkers;
+                case BuildingType.House:
+                    return houseSettings.peopleCount;
+                default:
+                    return 0;
+            }
+        }
+    }
+
+    public Dictionary<ResourceType, int> GetHourlyProduction()
+    {
+        var prod = new Dictionary<ResourceType, int>();
+        switch (buildingData.buildingType)
+        {
+            case BuildingType.Factory:
+                int metal = factorySettings.currentFactoryWorkers * factorySettings.baseProductionRatePerWorker;
+                prod[ResourceType.Metal] = metal;
+                break;
+            case BuildingType.Laboratory:
+                int researchTime = laboratorySettings.currentLaboratoryWorkers * laboratorySettings.baseReduceResearchTimePerWorker;
+                prod[ResourceType.ResearchTime] = researchTime;
+                break;
+            case BuildingType.House:
+                break;
+        }
+        return prod;
     }
     private void Start()
     {
@@ -156,5 +197,10 @@ public class BuildingInstance : MonoBehaviour
         {
             outline.enabled = false;
         }
+    }
+
+    internal List<BuildingInstance> ToList()
+    {
+        throw new NotImplementedException();
     }
 }

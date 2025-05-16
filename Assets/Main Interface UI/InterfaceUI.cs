@@ -1,4 +1,6 @@
+using System.Text;
 using TMPro;
+using TMPro.Examples;
 using Unity.Multiplayer.Center.Common;
 using UnityEngine;
 
@@ -8,6 +10,8 @@ public class InterfaceUI : MonoBehaviour
     public static InterfaceUI Instance;
     public TextMeshProUGUI mettalAmountText;
     public TextMeshProUGUI researchTimeText;
+    public TextMeshProUGUI peopleCountText;
+    public TextMeshProUGUI testText;
 
     void Awake()
     {
@@ -18,6 +22,12 @@ public class InterfaceUI : MonoBehaviour
     {
         mettalAmountText.text = "Metall: " + ResourseManager.Instance.metalAmount;
         researchTimeText.text = "Research Time: 0";
+        peopleCountText.text = "People: " + SettlementManager.Instance.startPeopleCount;
+
+    }
+    void Update()
+    {
+        TestFunc();
     }
 
     public void UpdateIntefaceFactoryUI()
@@ -54,4 +64,26 @@ public class InterfaceUI : MonoBehaviour
     {
         mettalAmountText.text = "Metall: " + metal.ToString();
     }
+
+    public void TestFunc()
+    {
+        testText.text = SettlementManager.Instance.TotalAssignedWorkers.ToString();
+    }
+
+    // public void TestFunc()
+    // {
+    //     if (testText == null)
+    //     {
+    //         Debug.Log("testText не назначен!");
+    //     }
+    //     var prod = SettlementManager.Instance.GetTotalHourlyProduction();
+    //     var sb = new StringBuilder();
+
+    //     foreach (var kv in prod)
+    //     {
+    //         sb.AppendLine($"{kv.Key}: {kv.Value}/h");
+    //     }
+
+    //     testText.text = sb.ToString();
+    // }
 }

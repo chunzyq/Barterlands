@@ -51,6 +51,7 @@ public class BuildManager : MonoBehaviour
 
     void Update()
     {
+        MouseOnBuilding();
 
         if (inBuildMode && MenuController.Instance.isPaused == false)
         {
