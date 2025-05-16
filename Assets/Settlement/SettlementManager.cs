@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class SettlementManager : MonoBehaviour
 {
-    public static SettlementManager Instance { get; private set; }
-
     [Header("Население")]
     public int startPeopleCount = 30;
 
@@ -17,15 +15,6 @@ public class SettlementManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         resourceStock = new Dictionary<ResourceType, int>();
         foreach (ResourceType rt in System.Enum.GetValues(typeof(ResourceType)))
         {

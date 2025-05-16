@@ -2,9 +2,11 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class FactoryUI : MonoBehaviour
 {
+    [Inject] UIController uIController;
     public TextMeshProUGUI productionRateText;
     public TextMeshProUGUI currentWorkersText;
     public TextMeshProUGUI currentEfficiencyText;
@@ -33,7 +35,7 @@ public class FactoryUI : MonoBehaviour
 
     private void OnDeleteBuildingButtonClicked()
     {
-        UIController.Instance.DeleteCurrentBuilding();
+        uIController.DeleteCurrentBuilding();
     }
 
     public void OnAddWorkersButtonClicked()

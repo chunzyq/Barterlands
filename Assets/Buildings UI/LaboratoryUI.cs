@@ -2,9 +2,11 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class LaboratoryUI : MonoBehaviour
 {
+    [Inject] UIController uIController;
     public TextMeshProUGUI researchTimeText;
     public TextMeshProUGUI currentWorkersText;
     public TextMeshProUGUI currentEfficiencyText;
@@ -31,7 +33,7 @@ public class LaboratoryUI : MonoBehaviour
 
     private void OnDeleteBuildingButtonClicked()
     {
-        UIController.Instance.DeleteCurrentBuilding();
+        uIController.DeleteCurrentBuilding();
     }
 
     private void OnAddWorkersButtonClicked()
@@ -41,7 +43,7 @@ public class LaboratoryUI : MonoBehaviour
             currentLaboratorySettings.currentLaboratoryWorkers += 1;
 
             UpdateAllUI();
-            UIController.Instance.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
+            uIController.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
         }
         else
         {
@@ -55,7 +57,7 @@ public class LaboratoryUI : MonoBehaviour
             currentLaboratorySettings.currentLaboratoryWorkers -= 1;
 
             UpdateAllUI();
-            UIController.Instance.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
+            uIController.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
         }
         else
         {

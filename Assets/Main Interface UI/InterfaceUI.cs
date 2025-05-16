@@ -3,11 +3,13 @@ using TMPro;
 using TMPro.Examples;
 using Unity.Multiplayer.Center.Common;
 using UnityEngine;
+using Zenject;
 
 public class InterfaceUI : MonoBehaviour
 {
 
     public static InterfaceUI Instance;
+    [Inject] SettlementManager settlementManager;
     public TextMeshProUGUI mettalAmountText;
     public TextMeshProUGUI researchTimeText;
     public TextMeshProUGUI peopleCountText;
@@ -22,12 +24,13 @@ public class InterfaceUI : MonoBehaviour
     {
         mettalAmountText.text = "Metall: " + ResourseManager.Instance.metalAmount;
         researchTimeText.text = "Research Time: 0";
-        peopleCountText.text = "People: " + SettlementManager.Instance.startPeopleCount;
+        peopleCountText.text = "People: " + settlementManager.startPeopleCount;
 
     }
     void Update()
     {
         TestFunc();
+        UpdatePeopleCountText();
     }
 
     public void UpdateIntefaceFactoryUI()
@@ -59,6 +62,10 @@ public class InterfaceUI : MonoBehaviour
         }
         researchTimeText.text = "Research Time: " + totalResearchTime.ToString();
     }
+    public void UpdatePeopleCountText()
+    {
+        peopleCountText.text = "People: " + settlementManager.FreeWorkers;
+    }
 
     public void UpdateMetalText(int metal)
     {
@@ -67,23 +74,7 @@ public class InterfaceUI : MonoBehaviour
 
     public void TestFunc()
     {
-        testText.text = SettlementManager.Instance.TotalAssignedWorkers.ToString();
+        testText.text = settlementManager.TotalAssignedWorkers.ToString();
+        
     }
-
-    // public void TestFunc()
-    // {
-    //     if (testText == null)
-    //     {
-    //         Debug.Log("testText не назначен!");
-    //     }
-    //     var prod = SettlementManager.Instance.GetTotalHourlyProduction();
-    //     var sb = new StringBuilder();
-
-    //     foreach (var kv in prod)
-    //     {
-    //         sb.AppendLine($"{kv.Key}: {kv.Value}/h");
-    //     }
-
-    //     testText.text = sb.ToString();
-    // }
 }

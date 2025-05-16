@@ -5,10 +5,13 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using Zenject;
 
 public class BuildingInstance : MonoBehaviour
 {
     public static BuildingInstance Instance;
+    [Inject] UIController uIController;
+    [Inject] SettlementManager settlementManager;
     public static List<BuildingInstance> allBuildingsInstance = new List<BuildingInstance>();
     public string InstanceID {get; private set;} // создаётся поле для уникального ID здания, у которого есть публичный доступ для ДОСТУПА, но приватный доступ для изменения
 
@@ -26,6 +29,7 @@ public class BuildingInstance : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        
         if (!isPreview)
         {
             allBuildingsInstance.Add(this);
@@ -44,13 +48,13 @@ public class BuildingInstance : MonoBehaviour
                 break;
         }
 
-        SettlementManager.Instance.RegisterBuilding(this);
+        settlementManager.RegisterBuilding(this);
     }
 
     private void OnDestroy()
     {
+        settlementManager.UnregisterBuilding(this);
         allBuildingsInstance.Remove(this);
-        SettlementManager.Instance.UnregisterBuilding(this);
     }
 
     public int CurrentWorkerCount
@@ -179,7 +183,7 @@ public class BuildingInstance : MonoBehaviour
         
         if (MenuController.Instance.isPaused == false)
         {
-            UIController.Instance.OpenBuildingUI(this);
+            uIController.OpenBuildingUI(this);
             Debug.Log("Clicked");
             if (outline != null)
             {

@@ -5,10 +5,13 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class BuildManager : MonoBehaviour
 {
     private BuildingData buildingData;
+    [Inject] UIController uIController;
+    [Inject] DiContainer container;
     public static BuildManager Instance;
 
     [Header("Кнопки")]
@@ -75,9 +78,9 @@ public class BuildManager : MonoBehaviour
 
             if (!Physics.Raycast(ray, out hit, 100f, buildingLayer))
             {
-                if (UIController.Instance.currentBuildingInstance != null)
+                if (uIController.currentBuildingInstance != null)
                 {
-                    UIController.Instance.CloseBuildingUI();
+                    uIController.CloseBuildingUI();
                 }
             }
         }
@@ -105,9 +108,13 @@ public class BuildManager : MonoBehaviour
             inBuildMode = false;
             return;
         }
-        currentBuildingPreview = Instantiate(buildingPrefab);
+        currentBuildingPreview = container.InstantiatePrefab(buildingPrefab, Vector3.zero, Quaternion.identity, null);
+        //BuildingInstance var previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
+        var previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
+        previewInstance.isPreview = true;
+        BuildingInstance.allBuildingsInstance.Remove(previewInstance);
 
-        BuildingInstance previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
+
         outline = currentBuildingPreview.GetComponent<Outline>();
 
         outline.enabled = false;
@@ -245,7 +252,8 @@ public class BuildManager : MonoBehaviour
 
         currentBuildingPreview.GetComponent<BuildingInstance>().isPreview = true;
 
-        newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
+        // newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
+        newBuilding = container.InstantiatePrefab(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation, null);
 
         Renderer renderer = newBuilding.GetComponent<Renderer>();
         if (renderer != null && originalMaterial != null)
@@ -264,11 +272,11 @@ public class BuildManager : MonoBehaviour
             
             if (buildingInstance.buildingData.buildingType == BuildingType.Laboratory)
             {
-                UIController.Instance.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
+                uIController.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
             }
             else if (buildingInstance.buildingData.buildingType == BuildingType.Factory)
             {
-                UIController.Instance.mainInterfaceUI.UpdateIntefaceFactoryUI();
+                uIController.mainInterfaceUI.UpdateIntefaceFactoryUI();
             }
         }
 
@@ -314,7 +322,7 @@ public class BuildManager : MonoBehaviour
     {
         yield return null;
 
-        UIController.Instance.mainInterfaceUI.UpdateMetalText(ResourseManager.Instance.metalAmount);
+        uIController.mainInterfaceUI.UpdateMetalText(ResourseManager.Instance.metalAmount);
         
     }
 

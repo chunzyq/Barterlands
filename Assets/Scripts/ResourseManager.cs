@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class ResourseManager : MonoBehaviour
 {
     public static ResourseManager Instance;
+    [Inject] UIController uIController;
 
     public int metalAmount = 30;
     public float productionInterval = 15f;
@@ -45,9 +47,9 @@ public class ResourseManager : MonoBehaviour
 
             metalAmount += totalProduction;
 
-            if (UIController.Instance != null && UIController.Instance.mainInterfaceUI != null)
+            if (uIController.mainInterfaceUI != null)
             {
-                UIController.Instance.mainInterfaceUI.UpdateMetalText(metalAmount);
+                uIController.mainInterfaceUI.UpdateMetalText(metalAmount);
             }
         }
     }
@@ -57,9 +59,9 @@ public class ResourseManager : MonoBehaviour
         if (metalAmount >= cost)
         {
             metalAmount -= cost;
-            if (UIController.Instance != null && UIController.Instance.mainInterfaceUI != null)
+            if (uIController.mainInterfaceUI != null)
             {
-                UIController.Instance.mainInterfaceUI.UpdateMetalText(metalAmount);
+                uIController.mainInterfaceUI.UpdateMetalText(metalAmount);
             }
             return true;
         }
@@ -72,9 +74,9 @@ public class ResourseManager : MonoBehaviour
     {
         metalAmount += amount;
 
-        if (UIController.Instance != null && UIController.Instance.mainInterfaceUI != null)
+        if (uIController.mainInterfaceUI != null)
         {
-            UIController.Instance.mainInterfaceUI.UpdateMetalText(metalAmount);
+            uIController.mainInterfaceUI.UpdateMetalText(metalAmount);
         }
     }
 }

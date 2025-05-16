@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using Zenject;
 
 public class SaveManager : MonoBehaviour
 {
     private string savePath;
+    [Inject] UIController uIController;
 
     private void Awake()
     {
@@ -80,9 +82,9 @@ public class SaveManager : MonoBehaviour
             }
 
             ResourseManager.Instance.metalAmount = saveData.metalAmount;
-            if (UIController.Instance != null && UIController.Instance.mainInterfaceUI != null)
+            if (uIController.mainInterfaceUI != null)
             {
-                UIController.Instance.mainInterfaceUI.UpdateMetalText(saveData.metalAmount);
+                uIController.mainInterfaceUI.UpdateMetalText(saveData.metalAmount);
             }
             Debug.Log("Игра загружена: " + savePath);
         }

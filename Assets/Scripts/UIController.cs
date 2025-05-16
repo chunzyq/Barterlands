@@ -1,9 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using Zenject;
 
 public class UIController : MonoBehaviour
 {
-    public static UIController Instance;
+    // public static UIController Instance;
+    [Inject] DiContainer container;
     private BuildingData buildingData;
     public InterfaceUI mainInterfaceUI;
 
@@ -16,7 +18,7 @@ public class UIController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        
     }
 
     public void OpenBuildingUI(BuildingInstance building)
@@ -46,7 +48,7 @@ public class UIController : MonoBehaviour
 
         if (prefabToInstantiate != null)
         {
-            activeBuildingUI = Instantiate(prefabToInstantiate, transform);
+            activeBuildingUI = container.InstantiatePrefab(prefabToInstantiate, transform);
 
             // activeBuildingUI.transform.localScale = Vector3.zero;
 

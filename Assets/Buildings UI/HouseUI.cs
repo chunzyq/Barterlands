@@ -2,10 +2,12 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 
 public class HouseUI : MonoBehaviour
 {
+    [Inject] UIController uIController;
     public TextMeshProUGUI peopleCountText;
     public Button increaseButton;
     public Button deleteBuildingButton;
@@ -25,7 +27,7 @@ public class HouseUI : MonoBehaviour
 
     private void OnDeleteBuildingButtonClicked()
     {
-        UIController.Instance.DeleteCurrentBuilding();
+        uIController.DeleteCurrentBuilding();
     }
 
     private void OnIncreaseButtonClicked()
