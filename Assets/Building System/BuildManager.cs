@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -9,10 +10,10 @@ using Zenject;
 
 public class BuildManager : MonoBehaviour
 {
-    private BuildingData buildingData;
     [Inject] UIController uIController;
     [Inject] DiContainer container;
-    public static BuildManager Instance;
+    [Inject] ResourseManager resourseManager;
+    [Inject] SettlementManager settlementManager;
 
     [Header("Кнопки")]
     public Button enterBuildMode_Btn;
@@ -39,15 +40,6 @@ public class BuildManager : MonoBehaviour
 
     void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         enterBuildMode_Btn.onClick.AddListener(OnEnterBuildModeButtonClicked);
         closeListOfBuildings_Btn.onClick.AddListener(OnCloseListOfBuildingsClicked);
     }
@@ -223,12 +215,12 @@ public class BuildManager : MonoBehaviour
     {
         if (currentBuildingPreview == null) return;
 
-        BuildingInstance previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
+        var previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
 
         if (previewInstance != null && previewInstance.buildingData.buildingType == BuildingType.Factory)
         {
             int factoryCost = 30;
-            bool canBuild = ResourseManager.Instance.SpendMetal(factoryCost);
+            bool canBuild = resourseManager.SpendMetal(factoryCost);
             if (!canBuild)
             {
                 Debug.Log("Недостаточно ресурса: металл");
@@ -240,7 +232,7 @@ public class BuildManager : MonoBehaviour
         else if (previewInstance != null && previewInstance.buildingData.buildingType == BuildingType.Laboratory)
         {
             int laboratoryCost = 60;
-            bool canBuild = ResourseManager.Instance.SpendMetal(laboratoryCost);
+            bool canBuild = resourseManager.SpendMetal(laboratoryCost);
             if (!canBuild)
             {
                 Debug.Log("Недостаточно ресурса: металл");
@@ -252,7 +244,6 @@ public class BuildManager : MonoBehaviour
 
         currentBuildingPreview.GetComponent<BuildingInstance>().isPreview = true;
 
-        // newBuilding = Instantiate(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation);
         newBuilding = container.InstantiatePrefab(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation, null);
 
         Renderer renderer = newBuilding.GetComponent<Renderer>();
@@ -322,7 +313,7 @@ public class BuildManager : MonoBehaviour
     {
         yield return null;
 
-        uIController.mainInterfaceUI.UpdateMetalText(ResourseManager.Instance.metalAmount);
+        uIController.mainInterfaceUI.UpdateMetalText(resourseManager.metalAmount);
         
     }
 
@@ -359,7 +350,7 @@ public class BuildManager : MonoBehaviour
     public void TryBuildFactory()
     {
         int factoryCost = 30;
-        if (ResourseManager.Instance.SpendMetal(factoryCost))
+        if (resourseManager.SpendMetal(factoryCost))
         {
             Debug.Log("Завод построен!");
         }

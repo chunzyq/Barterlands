@@ -7,29 +7,22 @@ using Zenject;
 
 public class InterfaceUI : MonoBehaviour
 {
-
-    public static InterfaceUI Instance;
     [Inject] SettlementManager settlementManager;
+    [Inject] ResourseManager resourseManager;
+
     public TextMeshProUGUI mettalAmountText;
     public TextMeshProUGUI researchTimeText;
     public TextMeshProUGUI peopleCountText;
-    public TextMeshProUGUI testText;
-
-    void Awake()
-    {
-        Instance = this;
-    }
 
     void Start()
     {
-        mettalAmountText.text = "Metall: " + ResourseManager.Instance.metalAmount;
+        mettalAmountText.text = "Metall: " + resourseManager.metalAmount;
         researchTimeText.text = "Research Time: 0";
         peopleCountText.text = "People: " + settlementManager.startPeopleCount;
 
     }
     void Update()
     {
-        TestFunc();
         UpdatePeopleCountText();
     }
 
@@ -42,7 +35,7 @@ public class InterfaceUI : MonoBehaviour
             if (building.buildingData.buildingType == BuildingType.Factory && building.factorySettings != null)
             {
                 float efficiencyFactor = building.factorySettings.currentFacEfficiency / 100f;
-                totalProduction += Mathf.RoundToInt(ResourseManager.Instance.metalPerFactory * efficiencyFactor);
+                totalProduction += Mathf.RoundToInt(resourseManager.metalPerFactory * efficiencyFactor);
             }
         }
 
@@ -70,11 +63,5 @@ public class InterfaceUI : MonoBehaviour
     public void UpdateMetalText(int metal)
     {
         mettalAmountText.text = "Metall: " + metal.ToString();
-    }
-
-    public void TestFunc()
-    {
-        testText.text = settlementManager.TotalAssignedWorkers.ToString();
-        
     }
 }

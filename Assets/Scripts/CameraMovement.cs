@@ -7,16 +7,26 @@ public class CameraMovement : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float cameraSpeed = 100f;
+    [SerializeField] private float moveSmoothinTime = 0.3f;
 
     [Header("Zoom Settings")]
     [SerializeField] private float zoomSpeed = 15f;
     [SerializeField] private float minZoom = 5f;
     [SerializeField] private float maxZoom = 20f;
+    [SerializeField] private float zoomSmoothinTime = 0.3f;
 
-    private float smoothingSpeed = 0.4f;
+    private Vector3 targetPosition;
+    private Vector3 moveVelocity = Vector3.zero;
 
-    Vector3 velocity = Vector3.zero;
-    private float currentZoom = 10f;
+    private float currentZoom = 0f;
+    private float targetZoom;
+    private float zoomVelocity = 0f;
+
+    void Start()
+    {
+        targetPosition = transform.position;
+        targetZoom = currentZoom;
+    }
 
     void Update()
     {
@@ -24,27 +34,33 @@ public class CameraMovement : MonoBehaviour
         HandleZoom();
     }
 
+    void LateUpdate()
+    {
+        currentZoom = Mathf.SmoothDamp(currentZoom, targetZoom, ref zoomVelocity, zoomSmoothinTime);
+
+        Vector3 desired = targetPosition + transform.forward * currentZoom;
+
+        transform.position = Vector3.SmoothDamp(transform.position, desired, ref moveVelocity, moveSmoothinTime);
+    }
+
     private void HandleMovement()
     {
         float HorizontalInput = Input.GetAxis("Horizontal");
         float VerticalInput = Input.GetAxis("Vertical");
 
-        Vector3 moveCamera = new Vector3(HorizontalInput, 0, VerticalInput) * cameraSpeed * Time.deltaTime;
+        Vector3 pan = new Vector3(HorizontalInput, 0f, VerticalInput) * cameraSpeed * Time.deltaTime;
 
-        Vector3 targetPosition = transform.position + moveCamera;
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity ,smoothingSpeed);
+        targetPosition += pan;
     }
 
     private void HandleZoom()
     {
         float zoomInput = Input.GetAxis("Mouse ScrollWheel");
 
-        if (zoomInput != 0 && !MenuController.Instance.isPaused)
-        {
-            currentZoom -= zoomSpeed * zoomInput;
-            currentZoom = Math.Clamp(currentZoom, minZoom, maxZoom);
-            Vector3 zoomDirection = transform.forward;
-            transform.position += zoomDirection * zoomSpeed * zoomInput;
-        }
+        if (zoomInput == 0f || MenuController.Instance.isPaused == true) return;
+
+        targetZoom += zoomInput * zoomSpeed;
+
+        targetZoom = Mathf.Clamp(targetZoom, minZoom, maxZoom);
     }
 }

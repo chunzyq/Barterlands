@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class MapManager : MonoBehaviour
 {
     public List<MapPointData> mapPoints;
-
     public GameObject pointPrefab;
     public Transform pointsParent;
     public MarkerPathController markerController;

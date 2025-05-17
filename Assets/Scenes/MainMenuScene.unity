@@ -1130,8 +1130,6 @@ MonoBehaviour:
   menuMusic: {fileID: 8300000, guid: 723fb14c4e85171769727bbfb3bfedc9, type: 3}
   musicVolume: 0.2
   fadeDuration: 1
-  buttonSound: {fileID: 0}
-  soundVolume: 0.5
 --- !u!4 &398174682
 Transform:
   m_ObjectHideFlags: 0

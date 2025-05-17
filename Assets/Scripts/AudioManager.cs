@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
-    
+
     [Header("Музыка меню")]
     [SerializeField] private AudioClip menuMusic;
     [SerializeField] private float musicVolume = 0.3f;
@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
     private float fadeTimer = 0f;
     private float startVolume = 0f;
     private float targetVolume = 0f;
-    
+
     private void Awake()
     {
         // Singleton реализация
@@ -23,29 +23,29 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            
+
             // Создаем AudioSource, если его нет
             musicSource = GetComponent<AudioSource>();
             if (musicSource == null)
             {
                 musicSource = gameObject.AddComponent<AudioSource>();
             }
-            
+
             // Базовые настройки
             musicSource.loop = true;
             musicSource.volume = musicVolume;
             musicSource.playOnAwake = false;
-            
+
             // Подписываемся на событие загрузки сцены
             SceneManager.sceneLoaded += OnSceneLoaded;
-            
+
             // Проверяем наличие музыкального клипа
             if (menuMusic == null)
             {
                 Debug.LogError("AudioManager: menuMusic не задан в инспекторе!");
             }
         }
-        else if (Instance != this)
+        else if (Instance != null)
         {
             Destroy(gameObject);
         }

@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using System;
+using Unity.Collections;
+using System.Collections;
 
 public class SettlementManager : MonoBehaviour
 {
@@ -11,6 +14,9 @@ public class SettlementManager : MonoBehaviour
     public Dictionary<ResourceType, int> resourceStock;
     public IReadOnlyDictionary<ResourceType, int> ResourceStock => resourceStock;
     public List<BuildingInstance> buildingList = new List<BuildingInstance>();
+    public event Action<ResourceType, int> OnResourceChange;
+
+    [SerializeField] private float productionInterval = 15f;
 
 
     void Awake()
@@ -19,6 +25,24 @@ public class SettlementManager : MonoBehaviour
         foreach (ResourceType rt in System.Enum.GetValues(typeof(ResourceType)))
         {
             resourceStock[rt] = 0;
+        }
+    }
+    private void Start()
+    {
+        StartCoroutine(ProduceResources());
+    }
+    private IEnumerator ProduceResources()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(productionInterval);
+
+            var production = GetTotalHourlyProduction();
+            foreach (var kv in production)
+            {
+                resourceStock[kv.Key] += kv.Value;
+                OnResourceChange?.Invoke(kv.Key, resourceStock[kv.Key]);
+            }
         }
     }
     public void RegisterBuilding(BuildingInstance building)
@@ -38,14 +62,16 @@ public class SettlementManager : MonoBehaviour
 
     public bool CanAfford(Dictionary<ResourceType, int> cost)
     {
-        foreach (var kv in cost)
-        {
-            if (resourceStock[kv.Key] < kv.Value)
-            {
-                return false;
-            }
-        }
-        return true;
+        return cost.All(kv => resourceStock[kv.Key] >= kv.Value);
+
+        // foreach (var kv in cost)
+        // {
+        //     if (resourceStock[kv.Key] < kv.Value)
+        //     {
+        //         return false;
+        //     }
+        // }
+        // return true;
     }
 
     public bool SpendResources(Dictionary<ResourceType, int> cost)
@@ -54,13 +80,20 @@ public class SettlementManager : MonoBehaviour
         foreach (var kv in cost)
         {
             resourceStock[kv.Key] -= kv.Value;
+            OnResourceChange?.Invoke(kv.Key, resourceStock[kv.Key]);
         }
         return true;
     }
     public void AddResources(ResourceType type, int amount)
     {
         resourceStock[type] += amount;
+        OnResourceChange?.Invoke(type, resourceStock[type]);
     }
+    // public void RefundResources(ResourceType type, int amount)
+    // {
+    //     resourceStock[type] += amount;
+    //     OnResourceChange?.Invoke(type, resourceStock[type]);
+    // }
     public Dictionary<ResourceType, int> GetTotalHourlyProduction()
     {
         var total = new Dictionary<ResourceType, int>();
@@ -87,12 +120,20 @@ public class SettlementManager : MonoBehaviour
             return null;
         }
         var go = Instantiate(data.buildingPrefab, pos, Quaternion.identity);
-        return go.GetComponent<BuildingInstance>();
+        var instance = go.GetComponent<BuildingInstance>();
+
+        instance.GenerateUniqueID();
+        RegisterBuilding(instance);
+        return instance;
     }
 
     public BuildingInstance GetBuildingByID(string id)
     {
         return buildingList.FirstOrDefault(b => b.InstanceID == id);
+    }
+    public void NotifyResourceChange(ResourceType type, int amount)
+    {
+        OnResourceChange?.Invoke(type, amount);
     }
 
 }

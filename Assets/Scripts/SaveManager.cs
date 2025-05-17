@@ -7,8 +7,11 @@ using Zenject;
 
 public class SaveManager : MonoBehaviour
 {
-    private string savePath;
+
     [Inject] UIController uIController;
+    [Inject] ResourseManager resourseManager;
+    [Inject] DiContainer container;
+    private string savePath;
 
     private void Awake()
     {
@@ -30,7 +33,7 @@ public class SaveManager : MonoBehaviour
             saveData.buildingSaveDatas.Add(building.GetSaveData());
         }
 
-        saveData.metalAmount = ResourseManager.Instance.metalAmount;
+        saveData.metalAmount = resourseManager.metalAmount;
 
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
@@ -66,7 +69,8 @@ public class SaveManager : MonoBehaviour
                 if (bd != null)
                 {
 
-                    GameObject buildingGO = Instantiate(bd.buildingPrefab, buildingDataSave.position, Quaternion.Euler(buildingDataSave.rotation));
+                    // GameObject buildingGO = Instantiate(bd.buildingPrefab, buildingDataSave.position, Quaternion.Euler(buildingDataSave.rotation));
+                    GameObject buildingGO = container.InstantiatePrefab(bd.buildingPrefab, buildingDataSave.position, Quaternion.Euler(buildingDataSave.rotation), null);
                     BuildingInstance instance = buildingGO.GetComponent<BuildingInstance>();
                     if (instance != null)
                     {
@@ -81,10 +85,10 @@ public class SaveManager : MonoBehaviour
                 }
             }
 
-            ResourseManager.Instance.metalAmount = saveData.metalAmount;
+            resourseManager.metalAmount = saveData.metalAmount;
             if (uIController.mainInterfaceUI != null)
             {
-                uIController.mainInterfaceUI.UpdateMetalText(saveData.metalAmount);
+                // uIController.mainInterfaceUI.UpdateMetalText(saveData.metalAmount);
             }
             Debug.Log("Игра загружена: " + savePath);
         }

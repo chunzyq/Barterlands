@@ -4,24 +4,11 @@ using Zenject;
 
 public class ResourseManager : MonoBehaviour
 {
-    public static ResourseManager Instance;
     [Inject] UIController uIController;
 
     public int metalAmount = 30;
     public float productionInterval = 15f;
     public int metalPerFactory = 32;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     private void Start()
     {

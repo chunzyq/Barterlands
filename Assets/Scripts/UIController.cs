@@ -1,12 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using Zenject;
+using System.Linq;
+using Unity.VisualScripting;
 
 public class UIController : MonoBehaviour
 {
-    // public static UIController Instance;
     [Inject] DiContainer container;
-    private BuildingData buildingData;
+    [Inject] SettlementManager settlementManager;
+    [Inject] ResourseManager resourseManager;
     public InterfaceUI mainInterfaceUI;
 
     public GameObject industialUIPrefab;
@@ -15,11 +17,6 @@ public class UIController : MonoBehaviour
     private GameObject activeBuildingUI;
 
     public BuildingInstance currentBuildingInstance;
-
-    private void Awake()
-    {
-        
-    }
 
     public void OpenBuildingUI(BuildingInstance building)
     {
@@ -49,10 +46,6 @@ public class UIController : MonoBehaviour
         if (prefabToInstantiate != null)
         {
             activeBuildingUI = container.InstantiatePrefab(prefabToInstantiate, transform);
-
-            // activeBuildingUI.transform.localScale = Vector3.zero;
-
-            // activeBuildingUI.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutCirc);
 
             if (building.buildingData.buildingType == BuildingType.Factory)
             {
@@ -94,18 +87,22 @@ public class UIController : MonoBehaviour
             {
                 int factoryCost = 30;
                 int refundAmount = Mathf.RoundToInt(factoryCost * 0.5f);
-                ResourseManager.Instance.RefundMetal(refundAmount);
+                resourseManager.RefundMetal(refundAmount);
             }
             else if (currentBuildingInstance.buildingData.buildingType == BuildingType.Laboratory)
             {
                 int laboratoryCost = 60;
                 int refundAmount = Mathf.RoundToInt(laboratoryCost * 0.5f);
-                ResourseManager.Instance.RefundMetal(refundAmount);
+                resourseManager.RefundMetal(refundAmount);
             }
 
             Destroy(currentBuildingInstance.gameObject);
             currentBuildingInstance = null;
         }
+
+        Destroy(currentBuildingInstance.gameObject);
+        currentBuildingInstance = null;
+
         if (activeBuildingUI != null)
         {
             Destroy(activeBuildingUI);
@@ -122,7 +119,7 @@ public class UIController : MonoBehaviour
         {
             mainInterfaceUI.UpdateIntefaceLaboratoryUI();
             mainInterfaceUI.UpdateIntefaceFactoryUI();
-            mainInterfaceUI.UpdateMetalText(ResourseManager.Instance.metalAmount);
+            mainInterfaceUI.UpdateMetalText(resourseManager.metalAmount);
         }
     }
 }
