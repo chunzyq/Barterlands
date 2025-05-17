@@ -100,9 +100,6 @@ public class UIController : MonoBehaviour
             currentBuildingInstance = null;
         }
 
-        Destroy(currentBuildingInstance.gameObject);
-        currentBuildingInstance = null;
-
         if (activeBuildingUI != null)
         {
             Destroy(activeBuildingUI);

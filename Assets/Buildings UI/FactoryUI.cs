@@ -7,6 +7,7 @@ using Zenject;
 public class FactoryUI : MonoBehaviour
 {
     [Inject] UIController uIController;
+    [Inject] SettlementManager settlementManager;
     public TextMeshProUGUI productionRateText;
     public TextMeshProUGUI currentWorkersText;
     public TextMeshProUGUI currentEfficiencyText;
@@ -40,7 +41,7 @@ public class FactoryUI : MonoBehaviour
 
     public void OnAddWorkersButtonClicked()
     {
-        if (currentFactorySettings.currentFactoryWorkers < currentFactorySettings.maxFactoryWorkers)
+        if (currentFactorySettings.currentFactoryWorkers < currentFactorySettings.maxFactoryWorkers && settlementManager.FreeWorkers > 0)
         {
             currentFactorySettings.currentFactoryWorkers += 1;
 

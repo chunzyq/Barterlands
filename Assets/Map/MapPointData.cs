@@ -8,6 +8,8 @@ public class MapPointData : ScriptableObject
     public Vector2 pointPosition;
     public bool isUnlocked;
     public Sprite pointIcon;
+    public int metalReward;
+    public int peopleReward;
 
     public List<MapPointData> nextPoints;
 }

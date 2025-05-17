@@ -7,6 +7,7 @@ using Zenject;
 public class LaboratoryUI : MonoBehaviour
 {
     [Inject] UIController uIController;
+    [Inject] SettlementManager settlementManager;
     public TextMeshProUGUI researchTimeText;
     public TextMeshProUGUI currentWorkersText;
     public TextMeshProUGUI currentEfficiencyText;
@@ -38,7 +39,7 @@ public class LaboratoryUI : MonoBehaviour
 
     private void OnAddWorkersButtonClicked()
     {
-        if (currentLaboratorySettings.currentLaboratoryWorkers < currentLaboratorySettings.maxLaboratoryWorkers)
+        if (currentLaboratorySettings.currentLaboratoryWorkers < currentLaboratorySettings.maxLaboratoryWorkers && settlementManager.FreeWorkers > 0)
         {
             currentLaboratorySettings.currentLaboratoryWorkers += 1;
 

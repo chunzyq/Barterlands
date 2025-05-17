@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using Zenject;
 
 public class MapManager : MonoBehaviour
 {
     public List<MapPointData> mapPoints;
+    // [Inject] ResourseManager resourseManager;
     public GameObject pointPrefab;
     public Transform pointsParent;
     public MarkerPathController markerController;
@@ -66,6 +68,9 @@ public class MapManager : MonoBehaviour
         isRaidBusy = true;
         Debug.Log($"Рейд на {mapPointData.pointName}...");
         yield return new WaitForSeconds(2f);
+
+        // resourseManager.metalAmount += mapPointData.metalReward;
+
         Debug.Log($"Рейд завершён, открываем следующие точки...");
 
         foreach (var next in mapPointData.nextPoints)

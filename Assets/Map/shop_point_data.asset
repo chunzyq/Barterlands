@@ -16,5 +16,7 @@ MonoBehaviour:
   pointPosition: {x: -201, y: 20}
   isUnlocked: 1
   pointIcon: {fileID: 21300000, guid: 490c3018d1348e54baa99abbe53123d4, type: 3}
+  metalReward: 50
+  peopleReward: 5
   nextPoints:
   - {fileID: 11400000, guid: 4b88f2ad06418e44dbcecfee26260ecc, type: 2}
