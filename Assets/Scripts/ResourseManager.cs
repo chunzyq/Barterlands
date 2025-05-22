@@ -6,7 +6,7 @@ public class ResourseManager : MonoBehaviour
 {
     [Inject] UIController uIController;
 
-    public int metalAmount = 30;
+    public int metalAmount = 300;
     public float productionInterval = 15f;
     public int metalPerFactory = 32;
 

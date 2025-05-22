@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -11,6 +12,7 @@ using Zenject;
 public class BuildManager : MonoBehaviour
 {
     [Inject] UIController uIController;
+    [Inject] IEnumerable<IBuildStrategy> _buildStrategies;
     [Inject] DiContainer container;
     [Inject] ResourseManager resourseManager;
     [Inject] SettlementManager settlementManager;
@@ -27,12 +29,15 @@ public class BuildManager : MonoBehaviour
     private GameObject buildingPrefab;
     private GameObject currentBuildingPreview;
     private Material originalMaterial;
+    [SerializeField] private IBuildStrategy _currentStrategy;
+    private BuildingData _currentData;
 
     [SerializeField] private float gridSize = 1.0f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask buildingLayer;
     [SerializeField] private Material validPlacementMaterial;
     [SerializeField] private Material invalidPlacementMaterial;
+    [Inject] private List<BuildingData> _availableBuilding;
 
     private GameObject newBuilding;
     private Outline outline;
@@ -78,15 +83,27 @@ public class BuildManager : MonoBehaviour
         }
     }
 
-    public void SelectBuilding(GameObject building)
+    public void SelectBuilding(BuildingData data)
     {
 
-        if (currentBuildingPreview != null)
+        _currentData = data;
+        _currentStrategy = _buildStrategies.FirstOrDefault(s => s.buildingType == data.buildingType);
+
+        if (_currentStrategy == null)
         {
-            Destroy(currentBuildingPreview);
+            Debug.Log("Стратегия не нашлась");
+        }
+        if (_currentData == null)
+        {
+            Debug.Log("Дата не нашлась");
         }
 
-        buildingPrefab = building;
+        if (currentBuildingPreview != null)
+            {
+                Destroy(currentBuildingPreview);
+            }
+
+        buildingPrefab = data.buildingPrefab;
         inBuildMode = true;
 
         CreateBuildingPreview();
@@ -213,68 +230,87 @@ public class BuildManager : MonoBehaviour
 
     private void PlaceBuilding()
     {
-        if (currentBuildingPreview == null) return;
+        // if (currentBuildingPreview == null) return;
 
-        var previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
+        // var previewInstance = currentBuildingPreview.GetComponent<BuildingInstance>();
 
-        if (previewInstance != null && previewInstance.buildingData.buildingType == BuildingType.Factory)
+        // if (previewInstance != null && previewInstance.buildingData.buildingType == BuildingType.Factory)
+        // {
+        //     int factoryCost = 30;
+        //     bool canBuild = resourseManager.SpendMetal(factoryCost);
+        //     if (!canBuild)
+        //     {
+        //         Debug.Log("Недостаточно ресурса: металл");
+        //         Destroy(currentBuildingPreview);
+        //         currentBuildingPreview = null;
+        //         return;
+        //     }
+        // }
+        // else if (previewInstance != null && previewInstance.buildingData.buildingType == BuildingType.Laboratory)
+        // {
+        //     int laboratoryCost = 60;
+        //     bool canBuild = resourseManager.SpendMetal(laboratoryCost);
+        //     if (!canBuild)
+        //     {
+        //         Debug.Log("Недостаточно ресурса: металл");
+        //         Destroy(currentBuildingPreview);
+        //         currentBuildingPreview = null;
+        //         return;
+        //     }
+        // }
+
+        // currentBuildingPreview.GetComponent<BuildingInstance>().isPreview = true;
+
+        // newBuilding = container.InstantiatePrefab(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation, null);
+
+        // Renderer renderer = newBuilding.GetComponent<Renderer>();
+        // if (renderer != null && originalMaterial != null)
+        // {
+        //     renderer.material = originalMaterial;
+        // }
+
+        // outline = newBuilding.GetComponent<Outline>();
+        // outline.enabled = false;
+
+        // BuildingInstance buildingInstance = newBuilding.GetComponent<BuildingInstance>();
+
+        // if (buildingInstance != null)
+        // {
+        //     buildingInstance.GenerateUniqueID();
+
+        //     if (buildingInstance.buildingData.buildingType == BuildingType.Laboratory)
+        //     {
+        //         uIController.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
+        //     }
+        //     else if (buildingInstance.buildingData.buildingType == BuildingType.Factory)
+        //     {
+        //         uIController.mainInterfaceUI.UpdateIntefaceFactoryUI();
+        //     }
+        // }
+
+        // StartCoroutine(DelayedUIUpdate());
+        // Destroy(currentBuildingPreview);
+        // currentBuildingPreview = null;
+        // inBuildMode = false;
+
+        if (_currentStrategy == null || currentBuildingPreview == null) return;
+
+        if (!_currentStrategy.CanBuild())
         {
-            int factoryCost = 30;
-            bool canBuild = resourseManager.SpendMetal(factoryCost);
-            if (!canBuild)
-            {
-                Debug.Log("Недостаточно ресурса: металл");
-                Destroy(currentBuildingPreview);
-                currentBuildingPreview = null;
-                return;
-            }
-        }
-        else if (previewInstance != null && previewInstance.buildingData.buildingType == BuildingType.Laboratory)
-        {
-            int laboratoryCost = 60;
-            bool canBuild = resourseManager.SpendMetal(laboratoryCost);
-            if (!canBuild)
-            {
-                Debug.Log("Недостаточно ресурса: металл");
-                Destroy(currentBuildingPreview);
-                currentBuildingPreview = null;
-                return;
-            }
+            Debug.Log("Недостаточно ресурсов.");
+            Destroy(currentBuildingPreview);
+            currentBuildingPreview = null;
+            return;
         }
 
-        currentBuildingPreview.GetComponent<BuildingInstance>().isPreview = true;
+        var pos = currentBuildingPreview.transform.position;
+        var rot = currentBuildingPreview.transform.rotation;
+        var instance = _currentStrategy.Create(pos, rot);
 
-        newBuilding = container.InstantiatePrefab(buildingPrefab, currentBuildingPreview.transform.position, currentBuildingPreview.transform.rotation, null);
+        _currentStrategy.OnBuilt(instance);
 
-        Renderer renderer = newBuilding.GetComponent<Renderer>();
-        if (renderer != null && originalMaterial != null)
-        {
-            renderer.material = originalMaterial;
-        }
-
-        outline = newBuilding.GetComponent<Outline>();
-        outline.enabled = false;
-
-        BuildingInstance buildingInstance = newBuilding.GetComponent<BuildingInstance>();
-
-        if (buildingInstance != null)
-        {
-            buildingInstance.GenerateUniqueID();
-            
-            if (buildingInstance.buildingData.buildingType == BuildingType.Laboratory)
-            {
-                uIController.mainInterfaceUI.UpdateIntefaceLaboratoryUI();
-            }
-            else if (buildingInstance.buildingData.buildingType == BuildingType.Factory)
-            {
-                uIController.mainInterfaceUI.UpdateIntefaceFactoryUI();
-            }
-        }
-
-        StartCoroutine(DelayedUIUpdate());
         Destroy(currentBuildingPreview);
         currentBuildingPreview = null;
-        inBuildMode = false;
     }
 
     private void MouseOnBuilding()

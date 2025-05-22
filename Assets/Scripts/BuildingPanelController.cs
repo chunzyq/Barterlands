@@ -72,7 +72,7 @@ public class BuildingPanelController : MonoBehaviour
 
         if (selectedBuilding.buildingPrefab != null)
         {
-            buildManager.SelectBuilding(selectedBuilding.buildingPrefab);
+            buildManager.SelectBuilding(selectedBuilding);
         }
         else
         {
