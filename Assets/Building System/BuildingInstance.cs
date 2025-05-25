@@ -22,7 +22,7 @@ public class BuildingInstance : MonoBehaviour
 
     private bool canOpenUI = false;
     public bool isPreview = false;
-    public bool isSelected { get; private set; }
+    public bool isSelected;
     private Outline outline;
 
 
