@@ -3,6 +3,7 @@ using System.Collections;
 using Zenject;
 using System.Linq;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class UIController : MonoBehaviour
 {
@@ -80,6 +81,7 @@ public class UIController : MonoBehaviour
 
     public void DeleteCurrentBuilding()
     {
+
         if (currentBuildingInstance != null)
         {
 
@@ -87,13 +89,15 @@ public class UIController : MonoBehaviour
             {
                 int factoryCost = 30;
                 int refundAmount = Mathf.RoundToInt(factoryCost * 0.5f);
-                resourseManager.RefundMetal(refundAmount);
+                var refund = new Dictionary<ResourceType, int> { { ResourceType.Metal, refundAmount } };
+                resourseManager.RefundResources(refund);
             }
             else if (currentBuildingInstance.buildingData.buildingType == BuildingType.Laboratory)
             {
                 int laboratoryCost = 60;
                 int refundAmount = Mathf.RoundToInt(laboratoryCost * 0.5f);
-                resourseManager.RefundMetal(refundAmount);
+                var refund = new Dictionary<ResourceType, int> { { ResourceType.Metal, refundAmount } };
+                resourseManager.RefundResources(refund);
             }
 
             Destroy(currentBuildingInstance.gameObject);

@@ -85,7 +85,7 @@ public class SaveManager : MonoBehaviour
                 }
             }
 
-            resourseManager.metalAmount = saveData.metalAmount;
+            // resourseManager.metalAmount = saveData.metalAmount;
             if (uIController.mainInterfaceUI != null)
             {
                 uIController.mainInterfaceUI.UpdateMetalText(saveData.metalAmount);

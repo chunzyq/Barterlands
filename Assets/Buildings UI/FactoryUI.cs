@@ -41,7 +41,7 @@ public class FactoryUI : MonoBehaviour
 
     public void OnAddWorkersButtonClicked()
     {
-        if (currentFactorySettings.currentFactoryWorkers < currentFactorySettings.maxFactoryWorkers && settlementManager.FreeWorkers > 0)
+        if (currentFactorySettings.currentFactoryWorkers < currentFactorySettings.maxFactoryWorkers && settlementManager.freeWorkers > 0)
         {
             currentFactorySettings.currentFactoryWorkers += 1;
 

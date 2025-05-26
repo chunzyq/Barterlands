@@ -6,10 +6,12 @@ using Zenject;
 public class BuildInputHandler : MonoBehaviour
 {
     [SerializeField] private LayerMask buildingLayer;
+    [SerializeField] private LayerMask groundLayer;
 
     public event Action OnPlaceBuilding;
     public event Action OnCancelBuilding;
     public event Action<BuildingInstance> OnBuildingClicked;
+    public event Action OnEmptyClick;
 
     private BuildManager _buildManager;
 
@@ -47,7 +49,13 @@ public class BuildInputHandler : MonoBehaviour
                 if (building != null && !building.isPreview)
                 {
                     OnBuildingClicked?.Invoke(building);
+                    return;
                 }
+            }
+
+            if (Physics.Raycast(ray, out RaycastHit groundHit, 100f, groundLayer))
+            {
+                OnEmptyClick?.Invoke();
             }
         }
     }

@@ -14,13 +14,12 @@ public class BuildUIHandler : MonoBehaviour
     public event Action OnBuildModeEntered;
     public event Action OnBuildModeExited;
     public event Action<BuildingData> OnBuildingTypeSelected;
-    
+
     private void Start()
     {
         enterBuildModeBtn.onClick.AddListener(() => OnBuildModeEntered?.Invoke());
         closeListOfBuildingsBtn.onClick.AddListener(() => OnBuildModeExited?.Invoke());
         
-        // Подписываемся на события менеджера
         var buildManager = GetComponent<BuildManager>();
         buildManager.OnBuildModeChanged += HandleBuildModeChanged;
     }
@@ -30,7 +29,6 @@ public class BuildUIHandler : MonoBehaviour
         buildingPanel.SetActive(isInBuildMode);
     }
     
-    // Вызывается из UI кнопок выбора типа здания
     public void SelectBuildingType(BuildingData data)
     {
         OnBuildingTypeSelected?.Invoke(data);

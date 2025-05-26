@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -9,6 +10,8 @@ public class BuildSelectionHandler : MonoBehaviour
     
     private BuildingInstance _currentSelection;
     private Outline _hoveredOutline;
+
+    public Action OnBuildingDeselect;
     
     private void Update()
     {
@@ -36,10 +39,13 @@ public class BuildSelectionHandler : MonoBehaviour
         if (_currentSelection != null)
         {
             _currentSelection.Deselect();
+            _uiController.CloseBuildingUI();
             _currentSelection = null;
+
+            OnBuildingDeselect?.Invoke();
         }
         
-        _uiController.CloseBuildingUI();
+        // _uiController.CloseBuildingUI();
     }
     
     private void HandleMouseHover()

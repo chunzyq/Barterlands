@@ -6,12 +6,13 @@ public class UniversalBuildingStrategy : MonoBehaviour
 {
     [Inject] private DiContainer _container;
     [Inject] private SettlementManager _settlementManager;
+    [Inject] private ResourseManager _resourceManager;
     [Inject] private UIController _uiController;
     
     public bool CanBuild(BuildingData data)
     {
         var cost = data.cost.ToDictionary(c => c.type, c => c.amount);
-        return _settlementManager.CanAfford(cost);
+        return _resourceManager.CanAfford(cost);
     }
     
     public BuildingInstance Create(BuildingData data, Vector3 position, Quaternion rotation)
@@ -29,14 +30,11 @@ public class UniversalBuildingStrategy : MonoBehaviour
     
     public void OnBuilt(BuildingInstance instance, BuildingData data)
     {
-        // Тратим ресурсы
         var cost = data.cost.ToDictionary(c => c.type, c => c.amount);
-        _settlementManager.SpendResources(cost);
+        _resourceManager.SpendResources(cost);
         
-        // Регистрируем здание
         _settlementManager.RegisterBuilding(instance);
         
-        // Обновляем UI в зависимости от типа здания
         UpdateUIForBuildingType(data.buildingType);
     }
     
@@ -53,10 +51,6 @@ public class UniversalBuildingStrategy : MonoBehaviour
             case BuildingType.Laboratory:
                 mainUI.UpdateIntefaceLaboratoryUI();
                 break;
-            // Добавьте другие типы по необходимости
         }
-        
-        // Обновляем отображение ресурсов
-        mainUI.UpdateMetalText((int)_settlementManager.resourceStock[ResourceType.Metal]);
     }
 }

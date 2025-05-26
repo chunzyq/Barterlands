@@ -24,7 +24,7 @@ public class BuildManager : MonoBehaviour
 
     public bool InBuildMode { get; private set; }
     public BuildingData CurrentBuildingData { get; private set; }
-    
+
     public event Action<bool> OnBuildModeChanged;
     public event Action<BuildingData> OnBuildingSelected;
 
@@ -62,22 +62,32 @@ public class BuildManager : MonoBehaviour
         _inputHandler.OnPlaceBuilding += HandlePlaceBuilding;
         _inputHandler.OnCancelBuilding += ExitBuildMode;
         _inputHandler.OnBuildingClicked += HandleBuildingClicked;
-        
+        _inputHandler.OnEmptyClick += HandleDeselectBuildingMenu;
+
         _uiHandler.OnBuildingTypeSelected += SelectBuilding;
         _uiHandler.OnBuildModeEntered += EnterBuildMode;
         _uiHandler.OnBuildModeExited += ExitBuildMode;
+
+        _selectionHandler.OnBuildingDeselect += HandleDeselectBuildingMenu;
+
+        _placementHandler.OnBuildingPlaced += ExitBuildMode;
     }
 
     private void OnDestroy()
     {
-        // Отписываемся от событий
         _inputHandler.OnPlaceBuilding -= HandlePlaceBuilding;
         _inputHandler.OnCancelBuilding -= ExitBuildMode;
         _inputHandler.OnBuildingClicked -= HandleBuildingClicked;
-        
+        _inputHandler.OnEmptyClick -= HandleDeselectBuildingMenu;
+
         _uiHandler.OnBuildingTypeSelected -= SelectBuilding;
         _uiHandler.OnBuildModeEntered -= EnterBuildMode;
         _uiHandler.OnBuildModeExited -= ExitBuildMode;
+
+        _selectionHandler.OnBuildingDeselect -= HandleDeselectBuildingMenu;
+
+        _placementHandler.OnBuildingPlaced -= ExitBuildMode;
+
     }
 
     public void EnterBuildMode()
@@ -98,29 +108,26 @@ public class BuildManager : MonoBehaviour
     {
         CurrentBuildingData = data;
         OnBuildingSelected?.Invoke(data);
-        
+
         if (!InBuildMode)
         {
             EnterBuildMode();
         }
-        
+
         _previewHandler.CreatePreview(data);
     }
 
     private void HandlePlaceBuilding()
     {
         if (!InBuildMode || CurrentBuildingData == null) return;
-        
+
         var position = _previewHandler.GetPreviewPosition();
         var rotation = _previewHandler.GetPreviewRotation();
-        
+
         if (_placementHandler.TryPlaceBuilding(CurrentBuildingData, position, rotation))
         {
-            // Опционально: выйти из режима строительства после размещения
-            // ExitBuildMode();
-            
-            // Или создать новый превью для следующего здания
-            _previewHandler.CreatePreview(CurrentBuildingData);
+            ExitBuildMode();
+            // _previewHandler.CreatePreview(CurrentBuildingData);
         }
     }
 
@@ -129,6 +136,14 @@ public class BuildManager : MonoBehaviour
         if (!InBuildMode)
         {
             _selectionHandler.SelectBuilding(building);
+        }
+    }
+
+    private void HandleDeselectBuildingMenu()
+    {
+        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        {
+            _selectionHandler.DeselectCurrent();
         }
     }
 
@@ -406,7 +421,7 @@ public class BuildManager : MonoBehaviour
     //     {
     //         BuildingInstance buildingInstance = hit.collider.GetComponent<BuildingInstance>();
     //         Outline currentOutline = hit.collider.GetComponent<Outline>();
-            
+
     //         if (currentOutline != null && buildingInstance != null && !buildingInstance.isSelected)
     //         {
     //             currentOutline.enabled = true;
@@ -433,7 +448,7 @@ public class BuildManager : MonoBehaviour
     //     yield return null;
 
     //     uIController.mainInterfaceUI.UpdateMetalText(resourseManager.metalAmount);
-        
+
     // }
 
     // private void ExitBuildMode()

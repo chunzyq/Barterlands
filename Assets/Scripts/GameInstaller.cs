@@ -47,7 +47,6 @@ public class GameInstaller : MonoInstaller
         Container.Bind<BuildSelectionHandler>().FromInstance(selectionHandler).AsSingle();
         Container.Bind<BuildingPlacementValidator>().FromInstance(placementValidator).AsSingle();
 
-
         Container.Bind<UniversalBuildingStrategy>().FromNewComponentOnNewGameObject().AsSingle();
 
         Container.Bind<Material>().WithId("validPlacement").FromInstance(validPlacementMaterial);

@@ -18,6 +18,7 @@ public class BuildingData : ScriptableObject
     [Header("Стоимость")]
     public List<ResourceCost> cost = new List<ResourceCost>();
 
+    [System.Serializable]
     public struct ResourceCost
     {
         public ResourceType type;

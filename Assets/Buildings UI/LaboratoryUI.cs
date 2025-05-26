@@ -39,7 +39,7 @@ public class LaboratoryUI : MonoBehaviour
 
     private void OnAddWorkersButtonClicked()
     {
-        if (currentLaboratorySettings.currentLaboratoryWorkers < currentLaboratorySettings.maxLaboratoryWorkers && settlementManager.FreeWorkers > 0)
+        if (currentLaboratorySettings.currentLaboratoryWorkers < currentLaboratorySettings.maxLaboratoryWorkers && settlementManager.freeWorkers > 0)
         {
             currentLaboratorySettings.currentLaboratoryWorkers += 1;
 
