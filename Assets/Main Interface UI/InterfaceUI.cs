@@ -130,17 +130,14 @@ public class InterfaceUI : MonoBehaviour
 
     public void ShowResourceChange(ResourceType type, int changeAmount)
     {
-        // Можно добавить всплывающий текст или анимацию
         string sign = changeAmount >= 0 ? "+" : "";
         Debug.Log($"{type}: {sign}{changeAmount}");
     }
     
     public void UpdateProductionRates()
     {
-        // Обновляем отображение производства для всех типов ресурсов
         var production = resourseManager.CalculateTotalProduction();
         
-        // Можно отобразить в UI скорость производства каждого ресурса
         foreach (var kvp in production)
         {
             Debug.Log($"{kvp.Key} production: +{kvp.Value}/h");

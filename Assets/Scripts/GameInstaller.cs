@@ -20,6 +20,7 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private BuildManager buildManagerPrefab;
     [SerializeField] private Material validPlacementMaterial;
     [SerializeField] private Material invalidPlacementMaterial;
+    [SerializeField] GameRegion gameRegion;
 
     public override void InstallBindings()
     {
@@ -48,6 +49,8 @@ public class GameInstaller : MonoInstaller
         Container.Bind<BuildingPlacementValidator>().FromInstance(placementValidator).AsSingle();
 
         Container.Bind<UniversalBuildingStrategy>().FromNewComponentOnNewGameObject().AsSingle();
+
+        Container.Bind<GameRegion>().FromInstance(gameRegion).AsSingle();
 
         Container.Bind<Material>().WithId("validPlacement").FromInstance(validPlacementMaterial);
         Container.Bind<Material>().WithId("invalidPlacement").FromInstance(invalidPlacementMaterial);
