@@ -25,13 +25,11 @@ public class ResourceMenuController : MonoBehaviour
         settlementManager.OnBuildingRegistered += OnBuildingChanged;
         settlementManager.OnBuildingUnregistered += OnBuildingChanged;
         
-        // Первичное обновление
         UpdateAllUI();
     }
 
     void OnDestroy()
     {
-        // Отписываемся от событий
         resourseManager.OnResourceChange -= OnResourceChanged;
         settlementManager.OnPopulationChange -= OnPopulationChanged;
         settlementManager.OnBuildingRegistered -= OnBuildingChanged;
@@ -65,13 +63,10 @@ public class ResourceMenuController : MonoBehaviour
 
     private void UpdateAllUI()
     {
-        // Обновляем ресурсы
         UpdateResourceDisplay(ResourceType.Metal, resourseManager.GetResourceAmount(ResourceType.Metal));
         
-        // Обновляем население
         UpdatePopulationUI();
         
-        // Обновляем производство
         UpdateProductionRates();
     }
 
@@ -103,10 +98,8 @@ public class ResourceMenuController : MonoBehaviour
 
     private void UpdateProductionRates()
     {
-        // Кешируем производство для оптимизации
         cachedProduction = resourseManager.CalculateTotalProduction();
         
-        // Обновляем отображение всех ресурсов с новыми показателями производства
         UpdateResourceDisplay(ResourceType.Metal, resourseManager.GetResourceAmount(ResourceType.Metal));
     }
 
@@ -122,27 +115,27 @@ public class ResourceMenuController : MonoBehaviour
         return rate.ToString();
     }
 
-    public void ShowDetailedStats()
-    {
-        // Можно вызвать для показа детальной статистики
-        Debug.Log("=== Resource Production Details ===");
+    // public void ShowDetailedStats()
+    // {
+    //     // Можно вызвать для показа детальной статистики
+    //     Debug.Log("=== Resource Production Details ===");
         
-        var buildings = settlementManager.GetAllBuildings();
-        foreach (var building in buildings)
-        {
-            var production = building.GetHourlyProduction();
-            if (production.Count > 0)
-            {
-                Debug.Log($"{building.buildingData.buildingName}:");
-                foreach (var kvp in production)
-                {
-                    Debug.Log($"  - {kvp.Key}: +{kvp.Value}/h");
-                }
-            }
-        }
+    //     var buildings = settlementManager.GetAllBuildings();
+    //     foreach (var building in buildings)
+    //     {
+    //         var production = building.GetHourlyProduction();
+    //         if (production.Count > 0)
+    //         {
+    //             Debug.Log($"{building.buildingData.buildingName}:");
+    //             foreach (var kvp in production)
+    //             {
+    //                 Debug.Log($"  - {kvp.Key}: +{kvp.Value}/h");
+    //             }
+    //         }
+    //     }
         
-        Debug.Log($"\nTotal Workers: {settlementManager.TotalAssignedWorkers}/{settlementManager.totalPopulation}");
-    }
+    //     Debug.Log($"\nTotal Workers: {settlementManager.TotalAssignedWorkers}/{settlementManager.totalPopulation}");
+    // }
 
     // void Update()
     // {
