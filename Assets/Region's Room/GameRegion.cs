@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -22,10 +23,28 @@ public class GameRegion : MonoBehaviour
 
     public void UpdateVisual(RegionState newState)
     {
+       // if (regionData.state == newState) return;
 
-        Renderer renderer = blackCoverageObject.GetComponent<Renderer>();
-        renderer.material = blackCoverageMat;
+        if (newState == RegionState.Chosen)
+        {
+              
+            blackCoverageObject.SetActive(false);            
+        }
 
-        blackCoverageObject.SetActive(true);
+    }
+
+    public void UnlockRegion(GameRegion region)
+    {
+        ChangeState(RegionState.Chosen);
+    }
+
+    public void LockRegion(GameRegion region)
+    {
+        ChangeState(RegionState.Locked);
+    }
+
+    private void MakeAvaliable(GameRegion region)
+    {
+        ChangeState(RegionState.AvailableForChoise);
     }
 }

@@ -4,9 +4,6 @@ using Zenject;
 
 public class RegionManager : MonoBehaviour
 {
-
-
-    [Inject] GameRegion gameRegion;
     [SerializeField] private List<GameRegion> allRegions = new List<GameRegion>();
 
     void Start()
@@ -27,7 +24,10 @@ public class RegionManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            gameRegion.ChangeState(RegionState.Locked);
+            foreach (GameRegion region in allRegions)
+            {
+                region.UnlockRegion(region);
+            }
         }
     }
 }
