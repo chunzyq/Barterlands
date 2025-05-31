@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework.Internal;
 using UnityEngine;
 using Zenject;
 
@@ -30,7 +31,7 @@ public class RegionManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            ChangeLevel();
+            settlementManager.TierUp(SettlementLevel.MakeShiftShelter);
         }
     }
     private void OnRegionsStateChanged(GameRegion region, RegionState newState)
@@ -39,8 +40,6 @@ public class RegionManager : MonoBehaviour
     }
     void ChangeLevel()
     {
-        settlementManager.TierUp(SettlementLevel.MakeShiftShelter);
-
         List<GameRegion> candidates = regionSelector.GetChoosenRegions();
         Debug.Log($"[RegionManager] Найдено кандидатов: {candidates.Count}");
 

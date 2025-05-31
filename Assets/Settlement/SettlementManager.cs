@@ -5,9 +5,11 @@ using UnityEngine;
 using System;
 using Unity.Collections;
 using System.Collections;
+using Zenject;
 
 public class SettlementManager : MonoBehaviour
 {
+
     [Header("Население")]
     [SerializeField] private int startPeopleCount = 30;
 
@@ -118,6 +120,7 @@ public class SettlementManager : MonoBehaviour
     public void TierUp(SettlementLevel newTier)
     {
         _currentLevel = newTier;
+        OnSettlementLevelChanged?.Invoke();
         Debug.Log($"Уровень поселения повышен до: {newTier}");
     }
 }

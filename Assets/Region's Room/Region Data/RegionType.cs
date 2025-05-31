@@ -4,5 +4,6 @@ public enum RegionType
 {
     Mountain,
     Forest,
-    Cave
+    Cave,
+    Rift
 }
