@@ -13,7 +13,9 @@ public class GameRegion : MonoBehaviour
 
     public void ChangeState(RegionState newState)
     {
-        RegionState oldState = newState;
+        if (regionData.state == newState) return;
+
+        RegionState oldState = regionData.state;
         regionData.state = newState;
 
         UpdateVisual(newState);
@@ -23,12 +25,11 @@ public class GameRegion : MonoBehaviour
 
     public void UpdateVisual(RegionState newState)
     {
-       // if (regionData.state == newState) return;
+        // if (regionData.state == newState) return;
 
         if (newState == RegionState.Chosen)
         {
-              
-            blackCoverageObject.SetActive(false);            
+            blackCoverageObject.SetActive(false);
         }
 
     }

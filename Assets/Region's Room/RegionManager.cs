@@ -5,6 +5,8 @@ using Zenject;
 public class RegionManager : MonoBehaviour
 {
     [SerializeField] private List<GameRegion> allRegions = new List<GameRegion>();
+    [SerializeField] private ChooseRegionForGrow regionSelector;
+    [SerializeField] private RegionUIHandler regionUIHandler;
     [Inject] SettlementManager settlementManager;
 
     void Start()
@@ -18,6 +20,11 @@ public class RegionManager : MonoBehaviour
     void OnDestroy()
     {
         settlementManager.OnSettlementLevelChanged -= ChangeLevel;
+
+        foreach (GameRegion region in allRegions)
+        {
+            region.OnStateChanged -= OnRegionsStateChanged;
+        }
     }
     void Update()
     {
@@ -30,17 +37,13 @@ public class RegionManager : MonoBehaviour
     {
         Debug.Log($"Регион {region.regionData.coordinates} изменил состояние на {newState}");
     }
-
-    // void Update()
-    // {
-
-    //     if (Input.GetKeyDown(KeyCode.B))
-    //     {
-    //         settlementManager.LevelUp(SettlementLevel.MakeShiftShelter);
-    //     }
-    // }
     void ChangeLevel()
     {
         settlementManager.TierUp(SettlementLevel.MakeShiftShelter);
+
+        List<GameRegion> candidates = regionSelector.GetChoosenRegions();
+        Debug.Log($"[RegionManager] Найдено кандидатов: {candidates.Count}");
+
+        regionUIHandler.OpenGrowthMenu(candidates);
     }
 }
