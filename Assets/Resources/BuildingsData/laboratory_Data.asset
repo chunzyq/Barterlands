@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837595ac1a387934288907c2ba611e7f, type: 3}
+  m_Name: laboratory_Data
+  m_EditorClassIdentifier: 
+  buildingID: 2
+  buildingName: "\u041B\u0430\u0431\u043E\u0440\u0430\u0442\u043E\u0440\u0438\u044F"
+  buildingType: 1
+  buildingIcon: {fileID: 21300000, guid: fcec965929299c1419e1a80f35568d9c, type: 3}
+  buildingPrefab: {fileID: 4669954504449496817, guid: c1ab182d397555342a9dedb35358adf8, type: 3}
+  cost:
+  - type: 1
+    amount: 60
