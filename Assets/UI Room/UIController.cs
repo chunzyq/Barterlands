@@ -71,6 +71,8 @@ public class UIController : MonoBehaviour
             {
                 TrainingStationUI ui = activeBuildingUI.GetComponent<TrainingStationUI>();
                 ui.Initialize(building.GetComponent<StalkerTrainingStation>());
+
+                //тут тестирую commit
             }
         }
     }
