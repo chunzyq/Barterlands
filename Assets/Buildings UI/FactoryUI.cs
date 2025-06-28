@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using Barterlands.Logging;
+using UnityEngine.PlayerLoop;
 
 public class FactoryUI : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class FactoryUI : MonoBehaviour
     public int productionRate;
 
     private FactorySettings currentFactorySettings;
+    private ILoggerService _logger;
 
     public void UpdateUI(FactorySettings settings)
     {
@@ -32,6 +35,8 @@ public class FactoryUI : MonoBehaviour
         addWorkersButton.onClick.AddListener(OnAddWorkersButtonClicked);
         removeWorkersButton.onClick.AddListener(OnRemoveWorkersButtonClicked);
         deleteBuildingButton.onClick.AddListener(OnDeleteBuildingButtonClicked);
+
+        _logger = new UnityLogger();
     }
 
     private void OnDeleteBuildingButtonClicked()
@@ -49,7 +54,7 @@ public class FactoryUI : MonoBehaviour
         }
         else
         {
-            Debug.Log("Максимальное количество рабочих достигнуто.");
+            _logger.Warning("Максимальное количество рабочих достигнуто.");
         }
     }
     public void OnRemoveWorkersButtonClicked()
@@ -63,7 +68,7 @@ public class FactoryUI : MonoBehaviour
         }
         else
         {
-            Debug.Log("Минимальное количество рабочих достигнуто.");
+            _logger.Warning("Минимальное количество рабочих достигнуто.");
         }
     }
     public void UpdateAllUI()

@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Barterlands.Logging;
 
 public class BuildingPanelController : MonoBehaviour
 {
@@ -10,6 +10,13 @@ public class BuildingPanelController : MonoBehaviour
     [SerializeField] RectTransform container;
     [SerializeField] Button buildingButtonPrefag;
     [SerializeField] BuildManager buildManager;
+
+    private ILoggerService _logger;
+
+    void Awake()
+    {
+        _logger = new UnityLogger();
+    }
 
     void Start()
     {
@@ -76,7 +83,7 @@ public class BuildingPanelController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("У здания " + selectedBuilding.buildingName + " не назначен префаб!");
+            _logger.Error("У здания " + selectedBuilding.buildingName + " не назначен префаб!");
         }
     }
 

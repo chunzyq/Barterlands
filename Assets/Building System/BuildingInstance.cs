@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Zenject;
+using Barterlands.Logging;
 
 public class BuildingInstance : MonoBehaviour
 {
@@ -24,12 +25,14 @@ public class BuildingInstance : MonoBehaviour
     public bool isPreview = false;
     public bool isSelected;
     private Outline outline;
+    private ILoggerService _logger;
 
 
     private void Awake()
     {
         Instance = this;
-        
+        _logger = new UnityLogger();
+
         if (!isPreview)
         {
             allBuildingsInstance.Add(this);
@@ -112,7 +115,7 @@ public class BuildingInstance : MonoBehaviour
     public void GenerateUniqueID()
     {
         InstanceID = System.Guid.NewGuid().ToString(); // генерируется уникальный ID
-        Debug.Log(InstanceID);
+        _logger.Info("Generated unique ID: " + InstanceID);
     }
 
     public void SetInstanceID(string id)
@@ -184,11 +187,9 @@ public class BuildingInstance : MonoBehaviour
         if (MenuController.Instance.isPaused == false)
         {
             uIController.OpenBuildingUI(this);
-            Debug.Log("Clicked");
             if (outline != null)
             {
                 outline.enabled = true;
-                Debug.Log("Обводка включена!");
             }
 
             isSelected = true;

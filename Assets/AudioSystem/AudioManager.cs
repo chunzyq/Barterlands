@@ -119,10 +119,6 @@ public class AudioManager : MonoBehaviour
                     StartFade(0f, musicVolume);
                 }
             }
-            else
-            {
-                Debug.Log("AudioManager: Музыка меню уже играет, громкость: " + musicSource.volume);
-            }
         }
         else
         {
@@ -144,6 +140,11 @@ public class AudioManager : MonoBehaviour
     // Запуск плавного изменения громкости
     private void StartFade(float from, float to)
     {
+        if (isFading && Mathf.Approximately(targetVolume, to))
+        {
+            return;
+        }
+        
         startVolume = from;
         targetVolume = to;
         fadeTimer = 0f;
@@ -174,7 +175,6 @@ public class AudioManager : MonoBehaviour
         else
         {
             isFading = false;
-            Debug.LogError("AudioManager: Потерян musicSource во время фейда");
         }
     }
     

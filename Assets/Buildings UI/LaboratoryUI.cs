@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using Barterlands.Logging;
 
 public class LaboratoryUI : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class LaboratoryUI : MonoBehaviour
     public int researchTimeDependsOnWorkers;
 
     private LaboratorySettings currentLaboratorySettings;
+    private ILoggerService _logger;
 
     public void UpdateUI(LaboratorySettings settings)
     {
@@ -30,6 +32,8 @@ public class LaboratoryUI : MonoBehaviour
         addWorkersButton.onClick.AddListener(OnAddWorkersButtonClicked);
         removeWorkersButton.onClick.AddListener(OnRemoveWorkersButtonClicked);
         deleteBuildingButton.onClick.AddListener(OnDeleteBuildingButtonClicked);
+
+        _logger = new UnityLogger();
     }
 
     private void OnDeleteBuildingButtonClicked()
@@ -48,7 +52,7 @@ public class LaboratoryUI : MonoBehaviour
         }
         else
         {
-            Debug.Log("Максимальное количество рабочих достигнуто.");
+            _logger.Warning("Максимальное количество рабочих достигнуто.");
         }
     }
     public void OnRemoveWorkersButtonClicked()
@@ -62,7 +66,7 @@ public class LaboratoryUI : MonoBehaviour
         }
         else
         {
-            Debug.Log("Минимальное количество рабочих достигнуто.");
+            _logger.Warning("Минимальное количество рабочих достигнуто.");
         }
     }
     public void UpdateAllUI()

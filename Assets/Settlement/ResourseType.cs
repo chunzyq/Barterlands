@@ -1,8 +1,15 @@
 public enum ResourceType
 {
-    Wood,
     Metal,
     Food,
     ResearchTime,
-    People
-}
+    Concrete,
+    Fuel,
+    ElectronicComponents,
+    Water,
+    FoodSupplies,
+    Energy,
+    Morale,
+    Artifacts,
+    Tokens
+}   
