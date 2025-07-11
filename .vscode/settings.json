@@ -56,5 +56,9 @@
         "temp/": true,
         "Temp/": true
     },
+<<<<<<< HEAD
     "dotnet.defaultSolution": "Barterlands.sln"
+=======
+    "dotnet.defaultSolution": "Barterlands-master.sln"
+>>>>>>> 8eb3e52001417875d608d1a539044b2694da79f6
 }
