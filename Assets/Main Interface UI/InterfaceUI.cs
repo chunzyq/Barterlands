@@ -7,7 +7,7 @@ using Zenject;
 
 public class InterfaceUI : MonoBehaviour
 {
-    [Inject] SettlementManager settlementManager;
+    [Inject] SettlementManager settlementManager; //test comment
     [Inject] ResourseManager resourseManager;
 
     public TextMeshProUGUI mettalAmountText;
