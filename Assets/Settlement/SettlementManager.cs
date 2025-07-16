@@ -125,7 +125,7 @@ public class SettlementManager : MonoBehaviour
     }
     public void ModifyPopulation(int value)
     {
-        totalPopulation = Mathf.Max(0, totalPopulation - value);
+        totalPopulation = Mathf.Max(0, totalPopulation - value); //todo: make freeWorkers - value, not total
         OnPopulationChange?.Invoke(totalPopulation);
     }
 }

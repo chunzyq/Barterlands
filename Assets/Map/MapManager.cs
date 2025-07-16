@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
+using Barterlands.Logging;
 using Zenject;
 
 public class MapManager : MonoBehaviour
 {
     public List<MapPointData> mapPoints;
-    // [Inject] ResourseManager resourseManager;
+    [Inject] StalkerUnitManager stalkerUnitManager;
     public GameObject pointPrefab;
     public Transform pointsParent;
     public MarkerPathController markerController;
     bool isRaidBusy = false;
     private Dictionary<MapPointData, PointView> spawned = new Dictionary<MapPointData, PointView>();
+    private ILoggerService _logger;
+
+    void Awake()
+    {
+        _logger = new UnityLogger();    
+    }
 
     public void Start()
     {
@@ -71,7 +76,8 @@ public class MapManager : MonoBehaviour
 
         // resourseManager.metalAmount += mapPointData.metalReward;
 
-        Debug.Log($"Рейд завершён, открываем следующие точки...");
+        _logger.Info($"Рейд завершён, открываем следующие точки...");
+        _logger.Error($"СТАЛКЕРЫ НА КАРТЕ АААА {stalkerUnitManager.stalkers.Count}");
 
         foreach (var next in mapPointData.nextPoints)
         {

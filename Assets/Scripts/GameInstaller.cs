@@ -24,6 +24,7 @@ public class GameInstaller : MonoInstaller
 
     [SerializeField] private StalkerTrainingStation trainingStationPrefab;
     [SerializeField] private TrainingStationUI uiPrefab;
+    [SerializeField] StalkerUnitManager stalkerUnitManager;
 
 
     public override void InstallBindings()
@@ -45,7 +46,8 @@ public class GameInstaller : MonoInstaller
         // Container.Bind<BuildingPlacementValidator>().FromNewComponentOnNewGameObject().AsSingle();
 
         Container.Bind<BuildManager>().FromInstance(buildManager).AsSingle();
-        Container.Bind<BuildInputHandler>().FromInstance(buildInputHandler).AsSingle();
+        // Container.Bind<BuildInputHandler>().FromInstance(buildInputHandler).AsSingle();
+        Container.Bind<BuildInputHandler>().FromComponentInHierarchy().AsSingle();
         Container.Bind<BuildPreviewHandler>().FromInstance(previewHandler).AsSingle();
         Container.Bind<BuildingPlacementHandler>().FromInstance(placementHandler).AsSingle();
         Container.Bind<BuildUIHandler>().FromInstance(buildUIHandler).AsSingle();
@@ -59,6 +61,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<Material>().WithId("validPlacement").FromInstance(validPlacementMaterial);
         Container.Bind<Material>().WithId("invalidPlacement").FromInstance(invalidPlacementMaterial);
 
+        Container.Bind<StalkerUnitManager>().FromInstance(stalkerUnitManager).AsSingle();
 
     }
 }

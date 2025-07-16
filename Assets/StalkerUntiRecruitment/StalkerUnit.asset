@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: StalkerUnit
   m_EditorClassIdentifier: 
   humanCost: 5
-  metalCost: 200
-  trainingTimeInSeconds: 200
+  metalCost: 1
+  trainingTimeInSeconds: 2

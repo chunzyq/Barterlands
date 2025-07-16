@@ -4,6 +4,9 @@ using Zenject;
 
 public class StalkerTrainingStation : MonoBehaviour
 {
+
+    [Inject] StalkerUnitManager stalkerUnitManager;
+
     [Header("Data & UI")]
     [SerializeField] private StalkerTrainingData trainingData;
     [SerializeField] private TrainingStationUI trainingStationUI;
@@ -53,7 +56,7 @@ public class StalkerTrainingStation : MonoBehaviour
     private IEnumerator TrainingCoroutine()
     {
         float remainingTime = trainingData.trainingTimeInSeconds;
-        
+
         while (remainingTime > 0)
         {
             trainingStationUI.SetStatus($"Тренировка идёт... Осталось: {remainingTime:F0} сек.");
@@ -63,5 +66,14 @@ public class StalkerTrainingStation : MonoBehaviour
 
         _isTraining = false;
         trainingStationUI.SetStatus("Тренировка завершена! Сталкер готов.");
+
+        StalkerData newStalker = new StalkerData()
+        {
+            stalkerName = "Сталкер №" + (stalkerUnitManager.stalkers.Count + 1),
+            stalkerLevel = 1,
+            stalkerHealth = 100.0f
+        };
+
+        stalkerUnitManager.AddStalkers(newStalker);
     }
 }
