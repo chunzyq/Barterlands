@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6818694994045777165}
-  - component: {fileID: 9138752226411667858}
+  - component: {fileID: 6135504358681092271}
   m_Layer: 0
   m_Name: StalkerUnitManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9138752226411667858
+--- !u!114 &6135504358681092271
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

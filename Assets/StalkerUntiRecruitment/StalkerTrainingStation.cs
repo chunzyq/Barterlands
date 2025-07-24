@@ -22,6 +22,15 @@ public class StalkerTrainingStation : MonoBehaviour
         settlementManager = FindAnyObjectByType<SettlementManager>();
     }
 
+    void Start()
+    {
+        if (stalkerUnitManager == null)
+        {
+            Debug.Log("Zenject не внедрил менеджер, использую ручной поиск");
+            stalkerUnitManager = FindAnyObjectByType<StalkerUnitManager>(); // test
+        }
+    }
+
     public void BindUI(TrainingStationUI ui)
     {
         trainingStationUI = ui;

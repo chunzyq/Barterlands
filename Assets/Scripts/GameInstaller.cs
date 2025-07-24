@@ -4,15 +4,12 @@ using Zenject;
 
 public class GameInstaller : MonoInstaller
 {
-    // [SerializeField] SettlementManager settlementManager;
     [SerializeField] UIController uIController;
-    // [SerializeField] ResourseManager resourseManager;
     [SerializeField] GameObject _factoryPrefab;
     [SerializeField] GameObject _laboratoryPrefab;
     [SerializeField] InterfaceUI interfaceUI;
     [SerializeField] BuildUIHandler buildUIHandler;
     [SerializeField] BuildManager buildManager;
-    [SerializeField] BuildInputHandler buildInputHandler;
     [SerializeField] BuildPreviewHandler previewHandler;
     [SerializeField] BuildingPlacementHandler placementHandler;
     [SerializeField] BuildingPlacementValidator placementValidator;
@@ -22,10 +19,6 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private Material invalidPlacementMaterial;
     [SerializeField] GameRegion gameRegion;
 
-    [SerializeField] private StalkerTrainingStation trainingStationPrefab;
-    [SerializeField] private TrainingStationUI uiPrefab;
-    [SerializeField] StalkerUnitManager stalkerUnitManager;
-
 
     public override void InstallBindings()
     {
@@ -33,20 +26,10 @@ public class GameInstaller : MonoInstaller
         Container.Bind<UIController>().FromInstance(uIController).AsSingle();
         Container.Bind<ResourseManager>().FromComponentInHierarchy().AsSingle();
         Container.Bind<InterfaceUI>().FromComponentInHierarchy().AsSingle();
-        // Container.Bind<IBuildStrategy>().To<FactoryBuildingStategy>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesTo<FactoryBuildingStategy>().AsSingle().WithArguments(_factoryPrefab);
         Container.BindInterfacesTo<LaboratoryBuildingStrategy>().AsSingle().WithArguments(_laboratoryPrefab);
 
-        // Container.Bind<BuildManager>().FromComponentInNewPrefab(buildManagerPrefab).AsSingle();
-        // Container.Bind<BuildInputHandler>().FromNewComponentOnNewGameObject().AsSingle();
-        // Container.Bind<BuildPreviewHandler>().FromNewComponentOnNewGameObject().AsSingle();
-        // Container.Bind<BuildingPlacementHandler>().FromNewComponentOnNewGameObject().AsSingle();
-        // Container.Bind<BuildUIHandler>().FromInstance(buildUIHandler).AsSingle();
-        // Container.Bind<BuildSelectionHandler>().FromNewComponentOnNewGameObject().AsSingle();
-        // Container.Bind<BuildingPlacementValidator>().FromNewComponentOnNewGameObject().AsSingle();
-
         Container.Bind<BuildManager>().FromInstance(buildManager).AsSingle();
-        // Container.Bind<BuildInputHandler>().FromInstance(buildInputHandler).AsSingle();
         Container.Bind<BuildInputHandler>().FromComponentInHierarchy().AsSingle();
         Container.Bind<BuildPreviewHandler>().FromInstance(previewHandler).AsSingle();
         Container.Bind<BuildingPlacementHandler>().FromInstance(placementHandler).AsSingle();
@@ -61,7 +44,8 @@ public class GameInstaller : MonoInstaller
         Container.Bind<Material>().WithId("validPlacement").FromInstance(validPlacementMaterial);
         Container.Bind<Material>().WithId("invalidPlacement").FromInstance(invalidPlacementMaterial);
 
-        Container.Bind<StalkerUnitManager>().FromInstance(stalkerUnitManager).AsSingle();
+        Container.Bind<UnitSelectionUIManager>().FromComponentInHierarchy().AsSingle();
+
 
     }
 }

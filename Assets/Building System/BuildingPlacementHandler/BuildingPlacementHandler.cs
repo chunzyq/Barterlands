@@ -7,10 +7,6 @@ public class BuildingPlacementHandler : MonoBehaviour
 {
 
     public event Action OnBuildingPlaced;
-
-    [Inject] private DiContainer _container;
-    [Inject] private SettlementManager _settlementManager;
-    [Inject] private BuildingPlacementValidator _validator;
     [Inject] private BuildPreviewHandler _previewHandler;   
     [Inject] private UniversalBuildingStrategy _universalStrategy;
 

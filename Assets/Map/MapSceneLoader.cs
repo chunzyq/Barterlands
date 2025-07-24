@@ -10,7 +10,7 @@ public class MapSceneLoader : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M) && MenuController.Instance.isPaused == false)
+        if (Input.GetKeyDown(KeyCode.M) && MenuController.Instance.isPaused == false) // todo save between scenes
         {
             string current = SceneManager.GetActiveScene().name;
             string next = current == _mapSceneName ? _mainSceneName : _mapSceneName;

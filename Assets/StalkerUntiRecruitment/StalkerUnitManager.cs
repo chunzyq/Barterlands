@@ -12,14 +12,21 @@ public class StalkerUnitManager : MonoBehaviour
 
     void Awake()
     {
-        _logger = new UnityLogger();
+        stalkers.Clear();
     }
 
     public void AddStalkers(StalkerData stalkerData)
     {
         stalkers.Add(stalkerData);
+
+        _logger = new UnityLogger();
+
         OnStalkerChanged?.Invoke();
         _logger.Info($"Сталкер добавлен! Всего сталкеров: {stalkers.Count}");
+    }
 
+    private void OnDestroy()
+    {
+        OnStalkerChanged = null;
     }
 }
