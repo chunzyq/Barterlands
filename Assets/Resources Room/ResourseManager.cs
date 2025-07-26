@@ -2,13 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
 public class ResourseManager : MonoBehaviour
 {
-    [Inject] private UIController uIController;
-    [Inject] private SettlementManager settlementManager;
+    // [Inject] private UIController uIController;
+    // [Inject] private SettlementManager settlementManager;
+
+    private UIController uIController;
+    private SettlementManager settlementManager;
 
     [Header("Начальные ресурсы")]
     [SerializeField] private int startingMetal = 300;
@@ -35,7 +39,7 @@ public class ResourseManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(ProductionCycle());
+        // StartCoroutine(ProductionCycle());
 
         UpdateUI();
     }
@@ -134,13 +138,21 @@ public class ResourseManager : MonoBehaviour
     }
 
     public int metalAmount => GetResourceAmount(ResourceType.Metal);
-    
+
     private void UpdateUI()
     {
         if (uIController?.mainInterfaceUI != null)
         {
             uIController.mainInterfaceUI.UpdateMetalText(GetResourceAmount(ResourceType.Metal));
         }
+    }
+
+    public void InitializeDependecies(UIController _uIController, SettlementManager _settlementManager)
+    {
+        uIController = _uIController;
+        settlementManager = _settlementManager;
+
+        StartCoroutine(ProductionCycle());
     }
 
     

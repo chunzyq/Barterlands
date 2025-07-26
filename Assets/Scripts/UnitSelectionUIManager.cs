@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Zenject;
+using System;
 
 public class UnitSelectionUIManager : MonoBehaviour
 {
@@ -80,4 +81,6 @@ public class UnitSelectionUIManager : MonoBehaviour
         selected.Remove(stalker);
         Destroy(go);
     }
+
+    public bool HasSelectedUnits => selected.Count > 0;
 }

@@ -75,3 +75,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stalkerUnitManager: {fileID: 6135504358681092271, guid: 69d0e895e17e1d148ad4cbd458e1bcf6, type: 3}
+  resourseManager: {fileID: 517369459151194543, guid: 842832f2b0382aa4c86b9176cb3ecd2f, type: 3}
+  uIController: {fileID: 0}
+  settlementManager: {fileID: 6878721166360559252, guid: e63b30eb5c4f76c42a8c1c002bf47a9f, type: 3}

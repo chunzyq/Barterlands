@@ -23,8 +23,7 @@ public class GameInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<SettlementManager>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<UIController>().FromInstance(uIController).AsSingle();
-        Container.Bind<ResourseManager>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<UIController>().FromComponentInHierarchy().AsSingle();
         Container.Bind<InterfaceUI>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesTo<FactoryBuildingStategy>().AsSingle().WithArguments(_factoryPrefab);
         Container.BindInterfacesTo<LaboratoryBuildingStrategy>().AsSingle().WithArguments(_laboratoryPrefab);

@@ -16,8 +16,6 @@ public class BuildManager : MonoBehaviour
 
     public event Action<bool> OnBuildModeChanged;
     public event Action<BuildingData> OnBuildingSelected;
-
-
     void Start()
     {
         _inputHandler.OnPlaceBuilding += HandlePlaceBuilding;

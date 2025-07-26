@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class MarkerPathController : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class MarkerPathController : MonoBehaviour
     [Header("Скорость движения (в ед./сек)")]
     public float moveSpeed = 200f;
 
+    [Inject] private StalkerUnitManager stalkerUnitManager;
+    [Inject] private UnitSelectionUIManager unitSelectionUIManager;
+
     public event Action<MapPointData> OnTargetReached;
 
     RectTransform targetRect;
@@ -24,6 +28,7 @@ public class MarkerPathController : MonoBehaviour
     {
         // линия прячется, пока нет цели
         lineRect.gameObject.SetActive(false);
+
     }
 
     void LateUpdate()
@@ -65,8 +70,15 @@ public class MarkerPathController : MonoBehaviour
     // Вызываем, когда игрок нажмёт «Go»
     public void MoveAlongLine()
     {
-        if (targetRect == null || isMoving) return;
-        StartCoroutine(Co_Move());
+        if (unitSelectionUIManager.HasSelectedUnits)
+        {
+            if (targetRect == null || isMoving) return;
+            StartCoroutine(Co_Move());
+        }
+        else
+        {
+            Debug.Log("Выберите сталкера!");
+        }
     }
 
     IEnumerator Co_Move()

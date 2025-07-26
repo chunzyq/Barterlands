@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Barterlands.Logging;
 using Zenject;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.NCalc;
+using System;
 
 public class MapManager : MonoBehaviour
 {
     public List<MapPointData> mapPoints;
     [Inject] StalkerUnitManager stalkerUnitManager;
+    [Inject] ResourseManager resourseManager;
     public GameObject pointPrefab;
     public Transform pointsParent;
     public MarkerPathController markerController;
@@ -17,7 +21,7 @@ public class MapManager : MonoBehaviour
 
     void Awake()
     {
-        _logger = new UnityLogger();    
+        _logger = new UnityLogger();
     }
 
     public void Start()
@@ -42,7 +46,8 @@ public class MapManager : MonoBehaviour
         var view = go.GetComponent<PointView>();
         view.Setup(data);
 
-        view.onPointSelected += selectedData => {
+        view.onPointSelected += selectedData =>
+        {
 
             if (isRaidBusy)
             {
@@ -51,19 +56,19 @@ public class MapManager : MonoBehaviour
 
             markerController.SetTarget(rt, selectedData);
         };
-        
+
         spawned[data] = view;
     }
 
     public void OnPointSelected(MapPointData mapPointData)
     {
-        if (mapPointData.isUnlocked)
+        if (stalkerUnitManager.stalkers.Count >= 1)
         {
             StartCoroutine(RaidCoroutine(mapPointData));
         }
         else
         {
-            Debug.Log($"Точка {mapPointData.pointName} заблокирована!");
+            _logger.Error("Ошибка! (как ты вообще сюда попал)");
         }
     }
 
@@ -71,13 +76,30 @@ public class MapManager : MonoBehaviour
     {
 
         isRaidBusy = true;
-        Debug.Log($"Рейд на {mapPointData.pointName}...");
+        _logger.Info($"Рейд на {mapPointData.pointName}...");
         yield return new WaitForSeconds(2f);
 
-        // resourseManager.metalAmount += mapPointData.metalReward;
+        var rewardMessage = new List<string>();
+
+        foreach (var reward in mapPointData.rewards)
+        {
+            if (reward.amount > 0)
+            {
+                resourseManager.AddResource(reward.type, reward.amount);
+                rewardMessage.Add($"{reward.amount} {GetResourceName(reward.type)}");
+            }
+        }
+
+        if (rewardMessage.Count > 0)
+        {
+            _logger.Info($"Получено: {string.Join(", ", rewardMessage)}");
+        }
+        else
+        {
+            _logger.Info("Ресурсы не были получены");
+        }
 
         _logger.Info($"Рейд завершён, открываем следующие точки...");
-        _logger.Error($"СТАЛКЕРЫ НА КАРТЕ АААА {stalkerUnitManager.stalkers.Count}");
 
         foreach (var next in mapPointData.nextPoints)
         {
@@ -90,5 +112,14 @@ public class MapManager : MonoBehaviour
 
         isRaidBusy = false;
 
+    }
+
+    private object GetResourceName(ResourceType key)
+    {
+        switch (key)
+    {
+        case ResourceType.Metal: return "металла";
+        default: return key.ToString().ToLower();
+    }
     }
 }
