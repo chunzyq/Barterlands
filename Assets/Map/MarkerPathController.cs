@@ -70,14 +70,14 @@ public class MarkerPathController : MonoBehaviour
     // Вызываем, когда игрок нажмёт «Go»
     public void MoveAlongLine()
     {
-        if (unitSelectionUIManager.HasSelectedUnits)
+        if (unitSelectionUIManager.HasSelectedUnits && stalkerUnitManager.stalkers.Count >= unitSelectionUIManager.maxAvailableUnits)
         {
             if (targetRect == null || isMoving) return;
             StartCoroutine(Co_Move());
         }
         else
         {
-            Debug.Log("Выберите сталкера!");
+            Debug.Log("Выберите как минимум 2х сталкеров!");
         }
     }
 

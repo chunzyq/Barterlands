@@ -14,6 +14,7 @@ public class UnitSelectionUIManager : MonoBehaviour
 
     private Button addUnitButton;
     private StalkerUnitManager unitManager;
+    public int maxAvailableUnits = 2;
     private List<StalkerData> selected = new List<StalkerData>();
 
     [Inject]
