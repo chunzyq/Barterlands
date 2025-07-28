@@ -41,6 +41,13 @@ public class StalkerTrainingStation : MonoBehaviour
         if (_isTraining)
         {
             Debug.Log("Лох");
+            trainingStationUI.SetStatus("Тренировка уже идёт!");
+            return;
+        }
+        else if (stalkerUnitManager.stalkers.Count >= stalkerUnitManager.maxAvailableStalkers)
+        {
+            Debug.Log("Занято.");
+            trainingStationUI.SetStatus("Максимальное кол-во сталкеров достигнуто.");
             return;
         }
 

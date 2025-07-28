@@ -2,13 +2,14 @@ using UnityEngine;
 using System.Collections.Generic;
 using Barterlands.Logging;
 using System;
+using Zenject;
 
 public class StalkerUnitManager : MonoBehaviour
 {
     public List<StalkerData> stalkers = new List<StalkerData>();
     public event Action OnStalkerChanged;
-
     private ILoggerService _logger;
+    public int maxAvailableStalkers = 3;
 
     void Awake()
     {
