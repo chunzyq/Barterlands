@@ -40,5 +40,11 @@ public class GameInstaller : MonoInstaller
         // Материалы
         Container.Bind<Material>().WithId("validPlacement").FromInstance(validPlacementMaterial);
         Container.Bind<Material>().WithId("invalidPlacement").FromInstance(invalidPlacementMaterial);
+
+        // UI штуки
+        Container.Bind<RaidMenuHandler>().FromComponentInHierarchy().AsSingle();
+
+        // Рейд-системы
+        Container.Bind<RaidManager>().FromComponentInHierarchy().AsSingle();
     }
 }

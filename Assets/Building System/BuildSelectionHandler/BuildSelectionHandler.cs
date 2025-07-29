@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 public class BuildSelectionHandler : MonoBehaviour
@@ -59,7 +60,7 @@ public class BuildSelectionHandler : MonoBehaviour
             var building = hit.collider.GetComponent<BuildingInstance>();
             var outline = hit.collider.GetComponent<Outline>();
             
-            if (outline != null && building != null && !building.isSelected && !building.isPreview)
+            if (outline != null && building != null && !building.isSelected && !building.isPreview && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (_hoveredOutline != null && _hoveredOutline != outline)
                 {

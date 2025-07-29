@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class StalkerTrainingStation : MonoBehaviour
@@ -48,6 +49,7 @@ public class StalkerTrainingStation : MonoBehaviour
         {
             Debug.Log("Занято.");
             trainingStationUI.SetStatus("Максимальное кол-во сталкеров достигнуто.");
+            ToastNotification.Show("Занято!");
             return;
         }
 
@@ -86,8 +88,6 @@ public class StalkerTrainingStation : MonoBehaviour
         StalkerData newStalker = new StalkerData()
         {
             stalkerName = "Сталкер №" + (stalkerUnitManager.stalkers.Count + 1),
-            stalkerLevel = 1,
-            stalkerHealth = 100.0f
         };
 
         stalkerUnitManager.AddStalkers(newStalker);

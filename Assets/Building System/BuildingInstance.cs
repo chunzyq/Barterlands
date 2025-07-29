@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Zenject;
 using Barterlands.Logging;
+using UnityEngine.EventSystems;
 
 public class BuildingInstance : MonoBehaviour
 {
@@ -184,7 +185,7 @@ public class BuildingInstance : MonoBehaviour
             return;
         }
         
-        if (MenuController.Instance.isPaused == false)
+        if (MenuController.Instance.isPaused == false && !EventSystem.current.IsPointerOverGameObject())
         {
             uIController.OpenBuildingUI(this);
             if (outline != null)

@@ -4,6 +4,4 @@ using UnityEngine;
 public class StalkerData
 {
     public string stalkerName;
-    public int stalkerLevel;
-    public float stalkerHealth;
 }

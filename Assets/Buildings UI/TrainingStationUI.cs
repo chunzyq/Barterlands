@@ -12,7 +12,6 @@ public class TrainingStationUI : MonoBehaviour
     [Header("UI элементы")]
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private Button startButton;
-    [SerializeField] private Button startRaidButton;
     [SerializeField] private TextMeshProUGUI availableUnitsText;
 
     private StalkerTrainingStation trainingStation;
@@ -20,7 +19,6 @@ public class TrainingStationUI : MonoBehaviour
     void Awake()
     {
         startButton.onClick.RemoveAllListeners();
-        startRaidButton.onClick.RemoveAllListeners();
 
         stalkerUnitManager.OnStalkerChanged += UpdateUnitCounterText;
     }
@@ -42,7 +40,6 @@ public class TrainingStationUI : MonoBehaviour
         station.BindUI(this);
 
         startButton.onClick.AddListener(OnStartTrainingButtonClicked);
-        // startRaidButton.onClick.AddListener(OnStartRaindButtonClicked); TODO!!!!
         statusText.text = "Готово к тренировке";
         availableUnitsText.text = $"Количество юнитов: {stalkerUnitManager.stalkers.Count} / {stalkerUnitManager.maxAvailableStalkers}";
     }
